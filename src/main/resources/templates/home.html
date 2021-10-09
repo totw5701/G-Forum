@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+    <title>Browser TITLE</title>
+</head>
+<body>
+<div class="main__frame">
+    <header class="header__frame">
+        <a href="/"><h1 class="header__title">게시판</h1></a>
+    </header>
+
+    <div class="control__frame">
+        <div class="authenticate__frame">
+            <!-- login / logout -->
+        </div>
+    </div>
+
+    <div class="body_frame">
+        <div class="post__top-bar">
+            <span class="post__top-bar__num">글번호</span>
+            <span class="post__top-bar__title">제목</span>
+            <span class="post__top-bar__date">날짜</span>
+            <span class="post__top-bar__author">작성자</span>
+        </div>
+
+        <div class="post__list">
+            <!-- List -->
+            <ul th:each="post : ${posts}">
+                <a href='/posts/postsId' th:href="@{/posts/{id} (id=${post.id})}" class="post__ul">
+                    <span class="post__list__num" th:text="${post.id}">1</span>
+                    <span class="post__list__title" th:text="${post.title}">title1</span>
+                    <span class="post__list__date" th:text="${post.date}">date</span>
+                    <span class="post__list__author" th:text="${post.authorNickname}">nickName</span>
+                </a>
+            </ul>
+            <ul>
+                <a href='/posts/${posts[pg-i-1].id}' class="post__ul">
+                    <span class="post__list__num">2</span>
+                    <span class="post__list__title">title2</span>
+                    <span class="post__list__date">date</span>
+                    <span class="post__list__author">nickName2</span>
+                </a>
+            </ul>
+        </div>
+
+        <div class="post__bottom-bar">
+            <div></div>
+            <div class="post__page-num">
+                ${page_select}
+            </div>
+            <div>
+                <a href="/posts/create" class="control__fram__button">CREATE</a>
+            </div>
+        </div>
+
+        <div class="searchBox__frame">
+            <form class="searchBox" action="/search" method="get">
+                <input class="searchPost__input" type="text" name="searchPost">
+                <button class="searchPost__button" type="submit"><i class="fas fa-search"></i></button>
+            </form>
+        </div>
+    </div>
+</div>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css" integrity="sha384-vSIIfh2YWi9wW0r9iZe7RJPrKwp6bG+s9QZMoITbCckVJqGCCRhc+ccxNcdpHuYu" crossorigin="anonymous">
+</body>
+</html>

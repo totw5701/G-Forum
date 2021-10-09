@@ -1,0 +1,14 @@
+.header__frame {
+  margin-top: 20px;
+  width: 600px;
+  border-bottom: solid 3px teal;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.header__title {
+  margin-bottom: 5px;
+  color: #3d3d3d;
+  font-weight: 900;
+  font-size: 40px;
+}

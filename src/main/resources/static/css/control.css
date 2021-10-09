@@ -1,0 +1,12 @@
+.control__frame {
+  margin-top: 20px;
+  width: 600px;
+  border-bottom: solid 2px teal;
+}
+
+.authenticate__frame {
+  padding-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
+  font-weight: 600;
+}
