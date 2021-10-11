@@ -190,6 +190,9 @@
 .author_register_text {
   margin: 15px 15px 0px 15px;
 }
+.post__page-num{
+  display:flex;
+}
 
 .post__page-num__element {
   margin-right: 5px;

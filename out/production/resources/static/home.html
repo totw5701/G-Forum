@@ -37,18 +37,20 @@
                     <span class="post__list__author" th:text="${post.authorNickname}">nickName</span>
                 </a>
             </ul>
+            <ul>
+                <a href='/posts/${posts[pg-i-1].id}' class="post__ul">
+                    <span class="post__list__num">2</span>
+                    <span class="post__list__title">title2</span>
+                    <span class="post__list__date">date</span>
+                    <span class="post__list__author">nickName2</span>
+                </a>
+            </ul>
         </div>
 
         <div class="post__bottom-bar">
             <div></div>
             <div class="post__page-num">
-                <div th:if="${isFirst == false}" >
-                    <a style="margin-right:12px;" href="/?page=#" th:href="@{/?page={pn} (pn=${pageNumStart+1})}" ><</a>
-                </div>
-                <a th:each="num : ${#numbers.sequence(pageNumStart, pageNumEnd)}" class="post__page-num__element" href="/?page=#" th:href="@{/?page={pn} (pn=${num})}" th:text="${num}">4</a>
-                <div th:if="${isLast == false}">
-                    <a style="margin-left: 10px"; href="/?page=#" th:href="@{/?page={pn} (pn=${pageNumEnd-1})}">></a>
-                </div>
+                ${page_select}
             </div>
             <div>
                 <a href="/posts/create" class="control__fram__button">CREATE</a>

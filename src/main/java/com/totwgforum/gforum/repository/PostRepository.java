@@ -24,12 +24,21 @@ public class PostRepository {
     }
 
     public List<Post> findAll(){
-        return em.createQuery("select p from Post p", Post.class).getResultList();
+        return em.createQuery("select p from Post p order by p.id desc", Post.class).getResultList();
     }
 
     public void remove(Post post){
         em.remove(post);
     }
 
+    public Object findCount(){
+        return em.createQuery("select count(p) from Post p").getSingleResult();
+    }
 
+    public List<Post> findList(int pageNum){
+        return em.createQuery("select p from Post p order by p.id desc", Post.class)
+                .setFirstResult(pageNum*20)
+                .setMaxResults(20)
+                .getResultList();
+    }
 }

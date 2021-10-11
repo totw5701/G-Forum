@@ -47,16 +47,15 @@ public class PostService {
          return postRepository.findAll();
     }
 
-    public List<Post> listUp(){
-        List<Post> rowPosts = postRepository.findAll();
-        Collections.sort(rowPosts, new Comparator<Post>() {
-            @Override
-            public int compare(Post o1, Post o2) {
-                if(o1.getCreated().isAfter(o2.getCreated())) return -1;
-                return 1;
-            }
-        });
-        return rowPosts;
+    public long findAllCount(){
+        Object count = postRepository.findCount();
+        return (long)count;
+    }
+
+    public List<Post> findPage(int pageNum, int nowPage){
+        int reverseNowPage = pageNum - nowPage;
+        List<Post> findList = postRepository.findList(reverseNowPage);
+        return findList;
     }
 
     public Post findById(Long postId){

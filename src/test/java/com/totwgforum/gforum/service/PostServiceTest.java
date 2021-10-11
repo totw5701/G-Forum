@@ -14,7 +14,6 @@ import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
-@Rollback(false)
 class PostServiceTest {
 
     @Autowired PostService postService;
@@ -34,6 +33,19 @@ class PostServiceTest {
         //then
         Post findOne = postService.findById(saveId);
         assertThat(findOne.getId()).isEqualTo(saveId);
+    }
+
+    @Test
+    @Rollback(false)
+    public void 더미데이터넣기(){
+        for(int i = 0; i < 200; i++) {
+            Post post = new Post();
+            post.setTitle("테스트 더미");
+            post.setDescription("테스트용 더미 내용.");
+            post.setAuthor(1L);
+            post.setCreated(LocalDateTime.now());
+            postService.create(post);
+        }
     }
 
     @Test
@@ -74,5 +86,10 @@ class PostServiceTest {
         //then
         assertThat(updatePost.getTitle()).isEqualTo("수정글");
         assertThat(updatePost.getDescription()).isEqualTo("수정글.");
+    }
+
+    @Test
+    public void 글수받아오기(){
+        postService.findAllCount();
     }
 }
