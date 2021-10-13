@@ -199,6 +199,13 @@
   font-weight: 600;
 }
 
+.post__page-num__element--selected{
+  margin-right: 5px;
+  font-weight: 600;
+  border: darkgreen;
+  color: darkgreen;
+}
+
 ul{
   list-style:none;
 }

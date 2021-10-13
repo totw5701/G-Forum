@@ -70,6 +70,7 @@ public class HomeController {
         model.addAttribute("pageNumEnd", pgEnd);
         model.addAttribute("isFirst", isFirstPage);
         model.addAttribute("isLast", isLastPage);
+        model.addAttribute("nowPage", nowPage);
         return "home";
     }
 }

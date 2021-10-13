@@ -38,7 +38,7 @@ class PostServiceTest {
     @Test
     @Rollback(false)
     public void 더미데이터넣기(){
-        for(int i = 0; i < 200; i++) {
+        for(int i = 0; i < 300; i++) {
             Post post = new Post();
             post.setTitle("테스트 더미");
             post.setDescription("테스트용 더미 내용.");
