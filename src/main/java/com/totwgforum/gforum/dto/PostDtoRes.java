@@ -11,7 +11,7 @@ public class PostDtoRes {
     private Long id;
     private String title;
     private String date;
-    private Long authorId;
+    private Long author;
     private String authorNickname;
     private String description;
 }

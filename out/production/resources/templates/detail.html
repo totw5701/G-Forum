@@ -21,10 +21,10 @@
         <div class="post__detail__control_box">
             <form action="/posts/delete" method="post" class="post__detail__control_box__delete">
                 <input type="hidden" name="id" value="id" th:value="${post.id}">
-                <input type="hidden" name="author" value="authorId" th:value="${post.authorId}">
-                <button class="posts__delete__button" type="submit">DELETE</button>
+                <input type="hidden" name="author" value="authorId" th:value="${post.author}">
+                <button class="posts__delete__button" type="submit" th:text="#{button.delete}">DELETE</button>
             </form>
-            <a href="/post/update/id" th:href="@{/posts/update/{id} (id=${post.id})}" class="control__fram__button">UPDATE</a>
+            <a href="/post/update/id" th:href="@{/posts/update/{id} (id=${post.id})}" class="control__fram__button" th:text="#{button.update}">UPDATE</a>
         </div>
     </div>
 </section>

@@ -1,6 +1,7 @@
 package com.totwgforum.gforum.controller;
 
 import com.totwgforum.gforum.domain.Post;
+import com.totwgforum.gforum.dto.PagingDto;
 import com.totwgforum.gforum.dto.PostDtoRes;
 import com.totwgforum.gforum.service.PostService;
 import com.totwgforum.gforum.service.UserService;
@@ -23,15 +24,16 @@ public class HomeController {
 
     @GetMapping("/")
     public String home(@RequestParam(value="page", required=false) Integer nowPage, Model model){
+        // 페이징
         long postCount = postService.findAllCount();
         int pageNum = (int)(postCount/20 + 1);
         if(postCount%20 == 0) pageNum--;
         if(nowPage == null){
             nowPage = pageNum;
         }
+        PagingDto pagingDto = new PagingDto(pageNum, nowPage);
 
         List<Post> listPosts = postService.findPage(pageNum, nowPage);
-
         List<PostDtoRes> posts = new ArrayList<>();
         for (Post rowPost : listPosts) {
             PostDtoRes post = new PostDtoRes();
@@ -49,28 +51,8 @@ public class HomeController {
             posts.add(post);
         }
 
-        // 페이징 정보
-        int i = (pageNum - nowPage) / 15;
-        int pgStart = pageNum -15*i;
-        int pgEnd = pageNum -15*(i+1) +1 ;
-        if(pgEnd < 1){
-            pgEnd = 1;
-        }
-        boolean isFirstPage = false;
-        boolean isLastPage = false;
-        if(i == 0){
-            isFirstPage = true;
-        }
-        if(pgEnd == 1){
-            isLastPage = true;
-        }
-
         model.addAttribute("posts", posts);
-        model.addAttribute("pageNumStart", pgStart);
-        model.addAttribute("pageNumEnd", pgEnd);
-        model.addAttribute("isFirst", isFirstPage);
-        model.addAttribute("isLast", isLastPage);
-        model.addAttribute("nowPage", nowPage);
+        model.addAttribute("pagingDto", pagingDto);
         return "home";
     }
 }

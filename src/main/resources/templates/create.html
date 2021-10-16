@@ -5,11 +5,11 @@
 
 
 <section class="body_frame">
-    <form action="/posts/create" method="post" class="post__create">
+    <form action="/posts/create" th:action th:object="${post}" method="post" class="post__create">
         <input type="hidden" value="1" name="author">
-        <input class="post_title" type="text" name="title" placeholder="Title">
-        <textarea class="post_description" name="description" placeholder="description"></textarea>
-        <input class="post_submit" type="submit" value="Create">
+        <input class="post_title" type="text" th:field="*{title}" placeholder="Title">
+        <textarea class="post_description" th:field="*{description}" placeholder="description"></textarea>
+        <input class="post_submit" type="submit" value="Create" th:value="#{button.create}">
     </form>
 </section>
 

@@ -4,12 +4,13 @@
 
 
 <title>gForum</title>
+
 <section class="body_frame">
     <div class="post__top-bar">
-        <span class="post__top-bar__num">글번호</span>
-        <span class="post__top-bar__title">제목</span>
-        <span class="post__top-bar__date">날짜</span>
-        <span class="post__top-bar__author">작성자</span>
+        <span class="post__top-bar__num" th:text="#{post.id}">글번호</span>
+        <span class="post__top-bar__title" th:text="#{post.title}">제목</span>
+        <span class="post__top-bar__date" th:text="#{post.created}">날짜</span>
+        <span class="post__top-bar__author" th:text="#{post.author}">작성자</span>
     </div>
 
     <div class="post__list">
@@ -27,16 +28,16 @@
     <div class="post__bottom-bar">
         <div></div>
         <div class="post__page-num">
-            <div th:if="${isFirst == false}" >
-                <a style="margin-right:12px;" href="/?page=#" th:href="@{/?page={pn} (pn=${pageNumStart+1})}" ><</a>
+            <div th:if="${pagingDto.isFirst() == false}" >
+                <a style="margin-right:12px;" href="/?page=#" th:href="@{/?page={pn} (pn=${pagingDto.pageNumStart+1})}" ><</a>
             </div>
-            <a th:each="num : ${#numbers.sequence(pageNumStart, pageNumEnd)}" class="post__page-num__element" th:class="${num == nowPage? 'post\_\_page-num\_\_element--selected':'post\_\_page-num\_\_element'}" href="/?page=#" th:href="@{/?page={pn} (pn=${num})}" th:text="${num}">4</a>
-            <div th:if="${isLast == false}">
-                <a style="margin-left: 10px"; href="/?page=#" th:href="@{/?page={pn} (pn=${pageNumEnd-1})}">></a>
+            <a th:each="num : ${#numbers.sequence(pagingDto.pageNumStart, pagingDto.pageNumEnd)}" class="post__page-num__element" th:class="${num == pagingDto.nowPage? 'post\_\_page-num\_\_element--selected':'post\_\_page-num\_\_element'}" href="/?page=#" th:href="@{/?page={pn} (pn=${num})}" th:text="${num}">4</a>
+            <div th:if="${pagingDto.isLast() == false}">
+                <a style="margin-left: 10px"; href="/?page=#" th:href="@{/?page={pn} (pn=${pagingDto.pageNumEnd-1})}">></a>
             </div>
         </div>
         <div>
-            <a href="/posts/create" class="control__fram__button">CREATE</a>
+            <a href="/posts/create" class="control__fram__button" th:text="#{button.create}">CREATE</a>
         </div>
     </div>
 

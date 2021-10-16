@@ -5,12 +5,12 @@
 <title th:text="|UPDATE ${post.title}|">UPDATE</title>
 
 <section class="body_frame">
-    <form action="/posts/update" method="post" class="post__create">
-        <input type="hidden" value="1" th:value="${post.id}" name="id">
-        <input type="hidden" value="1" th:value="${post.authorId}" name="author">
-        <input class="post_title" type="text" name="title" placeholder="Title" th:value="${post.title}">
-        <textarea class="post_description" name="description" placeholder="description" th:text="${post.description}"></textarea>
-        <input class="post_submit" type="submit" value="Update">
+    <form action="/posts/update" th:object="${post}" method="post" class="post__create">
+        <input type="hidden" th:field="*{id}">
+        <input type="hidden" th:field="*{author}">
+        <input class="post_title" type="text" th:field="*{title}" placeholder="Title">
+        <textarea class="post_description" th:field="*{description}" placeholder="description"></textarea>
+        <input class="post_submit" type="submit" value="Update" th:value="#{button.update}">
     </form>
 </section>
 <section class="body_frame_sub ">

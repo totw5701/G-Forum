@@ -22,7 +22,8 @@ public class PostController {
     private final PostService postService;
 
     @GetMapping("/posts/create")
-    public String createPostForm(){
+    public String createPostForm(Model model){
+        model.addAttribute("post", new Post());
         return "create";
     }
 
@@ -51,7 +52,7 @@ public class PostController {
             String authorNickname = userService.findById(rowPost.getAuthor()).getNickName();
             post.setAuthorNickname(authorNickname);
              */
-            post.setAuthorId(1L);
+            post.setAuthor(1L);
             post.setAuthorNickname("nickName");
 
         model.addAttribute("post", post);
@@ -66,7 +67,7 @@ public class PostController {
         Post rowPost = postService.findById(postId);
         PostDtoRes post = new PostDtoRes();
         post.setId(rowPost.getId());
-        post.setAuthorId(rowPost.getId());
+        post.setAuthor(rowPost.getId());
         post.setTitle(rowPost.getTitle());
         post.setDescription(rowPost.getDescription());
         model.addAttribute("post", post);
