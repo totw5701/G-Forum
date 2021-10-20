@@ -8,8 +8,10 @@
     <form action="/posts/update" th:object="${post}" method="post" class="post__create">
         <input type="hidden" th:field="*{id}">
         <input type="hidden" th:field="*{author}">
-        <input class="post_title" type="text" th:field="*{title}" placeholder="Title">
-        <textarea class="post_description" th:field="*{description}" placeholder="description"></textarea>
+        <input class="post_title" type="text" th:field="*{title}" placeholder="Title" th:errorclass="field-error">
+        <div class="field-error" th:errors="*{title}">에러 메세지</div>
+        <textarea class="post_description" th:field="*{description}" placeholder="description" th:errorclass="field-error"></textarea>
+        <div class="field-error" th:errors="*{description}">에러 메세지</div>
         <input class="post_submit" type="submit" value="Update" th:value="#{button.update}">
     </form>
 </section>

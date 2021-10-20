@@ -209,3 +209,8 @@
 ul{
   list-style:none;
 }
+
+.field-error{
+  border-color: red;
+  color: red;
+}

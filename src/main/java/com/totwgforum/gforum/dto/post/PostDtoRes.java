@@ -1,4 +1,4 @@
-package com.totwgforum.gforum.dto;
+package com.totwgforum.gforum.dto.post;
 
 import lombok.*;
 

@@ -2,14 +2,13 @@ package com.totwgforum.gforum.controller;
 
 import com.totwgforum.gforum.domain.Post;
 import com.totwgforum.gforum.dto.PagingDto;
-import com.totwgforum.gforum.dto.PostDtoRes;
+import com.totwgforum.gforum.dto.post.PostDtoRes;
 import com.totwgforum.gforum.service.PostService;
 import com.totwgforum.gforum.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.format.DateTimeFormatter;

@@ -1,20 +1,22 @@
 package com.totwgforum.gforum.controller;
 
 import com.totwgforum.gforum.domain.Post;
-import com.totwgforum.gforum.dto.PostDtoReq;
-import com.totwgforum.gforum.dto.PostDtoRes;
+import com.totwgforum.gforum.dto.post.PostDtoRes;
+import com.totwgforum.gforum.dto.post.PostSaveFormReq;
+import com.totwgforum.gforum.dto.post.PostUpdateFormReq;
 import com.totwgforum.gforum.service.PostService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 public class PostController {
@@ -28,7 +30,12 @@ public class PostController {
     }
 
     @PostMapping("/posts/create")
-    public String createPostProcess(PostDtoReq form){
+    public String createPostProcess(@Validated @ModelAttribute("post") PostSaveFormReq form, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            log.info("error={}", bindingResult);
+            return "create";
+        }
+
         Post post = new Post();
         post.setCreated(LocalDateTime.now());
         post.setAuthor(form.getAuthor());
@@ -75,7 +82,13 @@ public class PostController {
     }
 
     @PostMapping("/posts/update")
-    public String updatePostProcess(PostDtoReq form){
+    public String updatePostProcess(@Validated @ModelAttribute("post") PostUpdateFormReq form, BindingResult bindingResult){
+
+        if(bindingResult.hasErrors()){
+            log.info("error={}", bindingResult);
+            return "update";
+        }
+
         Post post = new Post();
         post.setTitle(form.getTitle());
         post.setDescription(form.getDescription());

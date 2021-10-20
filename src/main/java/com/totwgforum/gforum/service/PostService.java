@@ -1,17 +1,11 @@
 package com.totwgforum.gforum.service;
 
 import com.totwgforum.gforum.domain.Post;
-import com.totwgforum.gforum.dto.PostDtoRes;
 import com.totwgforum.gforum.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 @Service
