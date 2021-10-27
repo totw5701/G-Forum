@@ -25,15 +25,15 @@ public class PostController {
 
     @GetMapping("/posts/create")
     public String createPostForm(Model model){
-        model.addAttribute("post", new Post());
-        return "create";
+        model.addAttribute("post", new PostSaveFormReq());
+        return "post/create";
     }
 
     @PostMapping("/posts/create")
     public String createPostProcess(@Validated @ModelAttribute("post") PostSaveFormReq form, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
             log.info("error={}", bindingResult);
-            return "create";
+            return "post/create";
         }
 
         Post post = new Post();
@@ -63,7 +63,7 @@ public class PostController {
             post.setAuthorNickname("nickName");
 
         model.addAttribute("post", post);
-        return "detail";
+        return "post/detail";
     }
 
     @GetMapping("/posts/update/{postId}")
@@ -78,7 +78,7 @@ public class PostController {
         post.setTitle(rowPost.getTitle());
         post.setDescription(rowPost.getDescription());
         model.addAttribute("post", post);
-        return "update";
+        return "post/update";
     }
 
     @PostMapping("/posts/update")
@@ -86,7 +86,7 @@ public class PostController {
 
         if(bindingResult.hasErrors()){
             log.info("error={}", bindingResult);
-            return "update";
+            return "post/update";
         }
 
         Post post = new Post();

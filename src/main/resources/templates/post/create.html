@@ -1,20 +1,20 @@
 <!DOCTYPE html>
-<html th:replace="~{layout/default :: layout(~{::title},~{::section})}"
-        xmlns:th="http://www.thymeleaf.org">
+<html th:replace="~{/layout/default :: layout(~{::title},~{::section})}">
 
-<title th:text="|UPDATE ${post.title}|">UPDATE</title>
+    <title>CREATE</title>
+
 
 <section class="body_frame">
-    <form action="/posts/update" th:object="${post}" method="post" class="post__create">
-        <input type="hidden" th:field="*{id}">
-        <input type="hidden" th:field="*{author}">
+    <form action="/posts/create" th:action th:object="${post}" method="post" class="post__create">
+        <input type="hidden" value="1" name="author">
         <input class="post_title" type="text" th:field="*{title}" placeholder="Title" th:errorclass="field-error">
         <div class="field-error" th:errors="*{title}">에러 메세지</div>
         <textarea class="post_description" th:field="*{description}" placeholder="description" th:errorclass="field-error"></textarea>
         <div class="field-error" th:errors="*{description}">에러 메세지</div>
-        <input class="post_submit" type="submit" value="Update" th:value="#{button.update}">
+        <input class="post_submit" type="submit" value="Create" th:value="#{button.create}">
     </form>
 </section>
+
 <section class="body_frame_sub ">
     <div class="post__bottom-bar">
         <div></div>
@@ -22,5 +22,6 @@
         <div class="post__detail__control_box"></div>
     </div>
 </section>
+
 
 </html>

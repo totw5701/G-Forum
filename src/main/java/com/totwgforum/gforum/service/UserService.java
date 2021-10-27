@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -23,4 +24,28 @@ public class UserService {
     public User findById(Long userId){
         return userRepository.findOne(userId);
     }
+
+    public User findByEmail(String email){
+        Optional<User> findUser = userRepository.findAll().stream()
+                .filter(user -> user.getEmail().equals(email))
+                .findFirst();
+        if (findUser.isEmpty()) {
+            return null;
+        } else {
+            return findUser.get();
+        }
+    }
+
+    public User findByNickName(String nickName){
+        Optional<User> findUser = userRepository.findAll().stream()
+                .filter(user -> user.getNickName().equals(nickName))
+                .findFirst();
+        if (findUser.isEmpty()) {
+            return null;
+        } else {
+            return findUser.get();
+        }
+    }
+
+
 }

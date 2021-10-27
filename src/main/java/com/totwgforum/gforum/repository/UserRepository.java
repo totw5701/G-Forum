@@ -1,5 +1,6 @@
 package com.totwgforum.gforum.repository;
 
+import com.totwgforum.gforum.domain.Post;
 import com.totwgforum.gforum.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -19,5 +20,9 @@ public class UserRepository {
 
     public User findOne(Long id){
         return em.find(User.class, id);
+    }
+
+    public List<User> findAll(){
+        return em.createQuery("select u from User u order by u.id desc", User.class).getResultList();
     }
 }

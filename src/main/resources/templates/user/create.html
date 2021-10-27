@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html th:replace="~{/layout/default :: layout(~{::title},~{::section})}">
+
+    <title>CREATE</title>
+
+
+<section class="body_frame">
+
+
+    <form action="/user/create" th:action th:object="${user}" method="post" class="post__create">
+
+        <div th:if="${#fields.hasGlobalErrors()}">
+            <p class="field-error" th:each="err: ${#fields.globalErrors()}" th:text="${err}">전체 오류 메세지</p>
+        </div>
+
+        <span class="author_register_header">회원가입</span>
+
+        <span class="author_register_form" th:text="#{user.email}">Email</span>
+        <input class="author_register_text" type="text" name="email" th:field="*{email}">
+
+        <span class="author_register_form" th:text="#{user.nickName}">Nick Name</span>
+        <input class="author_register_text" type="text" name="nickName" th:field="*{nickName}">
+
+        <span class="author_register_form" th:text="#{user.password}">Password</span>
+        <input class="author_register_text" type="password" name="password" th:field="*{password}">
+
+        <span class="author_register_form" th:text="#{user.password.confirm}">Confirm Password</span>
+        <input class="author_register_text" type="password" name="password2" th:field="*{passwordConfirm}">
+
+        <input class="post_submit" type="submit" value="Register" th:value="#{button.create}">
+    </form>
+</section>
+
+<section class="body_frame_sub ">
+    <div class="post__bottom-bar">
+        <div></div>
+        <div class="post__page-num"></div>
+        <div class="post__detail__control_box"></div>
+    </div>
+</section>
+
+
+</html>
