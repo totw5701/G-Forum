@@ -1,10 +1,12 @@
 package com.totwgforum.gforum.controller;
 
 import com.totwgforum.gforum.domain.Post;
+import com.totwgforum.gforum.domain.User;
 import com.totwgforum.gforum.dto.post.PostDtoRes;
 import com.totwgforum.gforum.dto.post.PostSaveFormReq;
 import com.totwgforum.gforum.dto.post.PostUpdateFormReq;
 import com.totwgforum.gforum.service.PostService;
+import com.totwgforum.gforum.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -22,17 +24,24 @@ import java.time.format.DateTimeFormatter;
 public class PostController {
 
     private final PostService postService;
+    private final UserService userService;
 
     @GetMapping("/posts/create")
-    public String createPostForm(Model model){
+    public String createPostForm(Model model, @SessionAttribute(name = "loginUser", required = false) User loginUser){
+        model.addAttribute("loginUser", loginUser);
         model.addAttribute("post", new PostSaveFormReq());
         return "post/create";
     }
 
     @PostMapping("/posts/create")
-    public String createPostProcess(@Validated @ModelAttribute("post") PostSaveFormReq form, BindingResult bindingResult){
+    public String createPostProcess(@Validated @ModelAttribute("post") PostSaveFormReq form, BindingResult bindingResult,
+                                    @SessionAttribute(name = "loginUser", required = false) User loginUser,
+                                    Model model){
+        log.info("form={}",form);
+
         if(bindingResult.hasErrors()){
             log.info("error={}", bindingResult);
+            model.addAttribute("loginUser", loginUser);
             return "post/create";
         }
 
@@ -46,8 +55,21 @@ public class PostController {
     }
 
     @GetMapping("/posts/{postId}")
-    public String detailPost(@PathVariable Long postId, Model model){
+    public String detailPost(@PathVariable Long postId, Model model, @SessionAttribute(name = "loginUser", required = false) User loginUser){
+
+        model.addAttribute("loginUser", loginUser);
+
         Post rowPost = postService.findById(postId);
+
+        if (loginUser != null) {
+            // 세션 유저와 author가 일치하는지 확인하여 boolean값을 렌더링.
+            if (loginUser.getId().equals(rowPost.getAuthor())) {
+                model.addAttribute("isAuthorLogin", true);
+            } else {
+                model.addAttribute("isAuthorLogin", false);
+            }
+        }
+
         PostDtoRes post = new PostDtoRes();
         post.setTitle(rowPost.getTitle());
         post.setDescription(rowPost.getDescription());
@@ -55,34 +77,52 @@ public class PostController {
         String date = rowPost.getCreated().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm"));
         post.setDate(date);
 
-            /* User 정보 가져오기.
-            String authorNickname = userService.findById(rowPost.getAuthor()).getNickName();
-            post.setAuthorNickname(authorNickname);
-             */
-            post.setAuthor(1L);
-            post.setAuthorNickname("nickName");
+        User author = userService.findById(rowPost.getAuthor());
+        post.setAuthorNickname(author.getNickName());
+        post.setAuthor(author.getId());
 
         model.addAttribute("post", post);
         return "post/detail";
     }
 
     @GetMapping("/posts/update/{postId}")
-    public String updatePostForm(@PathVariable Long postId, Model model){
+    public String updatePostForm(@PathVariable Long postId, Model model, @SessionAttribute(name = "loginUser", required = false) User loginUser){
 
-        // author와 로그인 한 사용자가 일치하는지 확인
+        model.addAttribute("loginUser", loginUser);
 
         Post rowPost = postService.findById(postId);
+
         PostDtoRes post = new PostDtoRes();
         post.setId(rowPost.getId());
-        post.setAuthor(rowPost.getId());
+        post.setAuthor(rowPost.getAuthor());
         post.setTitle(rowPost.getTitle());
         post.setDescription(rowPost.getDescription());
+
+        // author와 로그인 한 사용자가 일치하는지 확인
+        if (!loginUser.getId().equals(rowPost.getAuthor())) {
+            log.info("post/update, 세션과 author가 다름");
+            return "redirect:/";
+        }
+
         model.addAttribute("post", post);
         return "post/update";
     }
 
     @PostMapping("/posts/update")
-    public String updatePostProcess(@Validated @ModelAttribute("post") PostUpdateFormReq form, BindingResult bindingResult){
+    public String updatePostProcess(@Validated @ModelAttribute("post") PostUpdateFormReq form, BindingResult bindingResult,
+                                    @SessionAttribute(name = "loginUser", required = false) User loginUser){
+
+
+        log.info("form={}", form);
+        log.info("loginUser={}", loginUser);
+
+        // author와 로그인 한 사용자가 일치하는지 확인
+        if (!loginUser.getId().equals(form.getAuthor())) {
+            log.info("loginUser.getId()={}",loginUser.getId());
+            log.info("form.getAuthor()={}",form.getAuthor());
+            log.info("post/update, 세션과 author가 다름");
+            return "redirect:/";
+        }
 
         if(bindingResult.hasErrors()){
             log.info("error={}", bindingResult);
@@ -98,11 +138,14 @@ public class PostController {
 
     @PostMapping("/posts/delete")
     public String deletePost(@RequestParam("id") Long postId,
-                             @RequestParam("author") Long author){
+                             @RequestParam("author") Long author,
+                             @SessionAttribute(name = "loginUser", required = false) User loginUser){
 
         // 로그인된 회원과 authorId 일치 확인.
+        if (!loginUser.getId().equals(author)) {
+            return "redirect:/";
+        }
 
-        System.out.println("PostController.deletePost");
         postService.delete(postId);
         return "redirect:/";
     }

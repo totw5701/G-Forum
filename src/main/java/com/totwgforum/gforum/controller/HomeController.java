@@ -1,6 +1,7 @@
 package com.totwgforum.gforum.controller;
 
 import com.totwgforum.gforum.domain.Post;
+import com.totwgforum.gforum.domain.User;
 import com.totwgforum.gforum.dto.PagingDto;
 import com.totwgforum.gforum.dto.post.PostDtoRes;
 import com.totwgforum.gforum.service.PostService;
@@ -10,7 +11,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -22,7 +26,15 @@ public class HomeController {
     private final UserService userService;
 
     @GetMapping("/")
-    public String home(@RequestParam(value="page", required=false) Integer nowPage, Model model){
+    public String home(@RequestParam(value="page", required=false) Integer nowPage,
+                       Model model,
+                       HttpServletRequest req,
+                       @SessionAttribute(name = "loginUser", required = false) User loginUser){
+        // 로그인 유무.
+        model.addAttribute("loginUser", loginUser);
+
+
+
         // 페이징
         long postCount = postService.findAllCount();
         int pageNum = (int)(postCount/20 + 1);

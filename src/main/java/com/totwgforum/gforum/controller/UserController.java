@@ -3,6 +3,7 @@ package com.totwgforum.gforum.controller;
 import com.totwgforum.gforum.domain.Post;
 import com.totwgforum.gforum.domain.User;
 import com.totwgforum.gforum.dto.post.PostSaveFormReq;
+import com.totwgforum.gforum.dto.user.UserLoginFormReq;
 import com.totwgforum.gforum.dto.user.UserSaveFormReq;
 import com.totwgforum.gforum.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +15,10 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 
 @Slf4j
@@ -31,29 +35,29 @@ public class UserController {
     }
 
     @PostMapping("/user/create")
-    public String createUserProcess(@Validated @ModelAttribute("user")UserSaveFormReq form, BindingResult bindingResult){
+    public String createUserProcess(@Validated @ModelAttribute("user")UserSaveFormReq form,
+                                    BindingResult bindingResult){
 
         // 비밀번호 보안 어떻게 해야하는지 찾아볼 것.
 
-        if(form.getPasswordConfirm() != null && form.getPassword() != null) {
-            if (!form.getPassword().equals(form.getPasswordConfirm())) {
-                bindingResult.reject("passwordConfirm");
-            }
+        if(bindingResult.hasErrors()){
+            log.info("error={}", bindingResult);
+            return "user/create";
         }
 
-        if(form.getEmail() != null){
-            User findUser = userService.findByEmail(form.getEmail());
-            System.out.println("findUser = " + findUser);
-            if(findUser != null){
-                bindingResult.reject("emailDuplicate");
-            }
+        if (!form.getPassword().equals(form.getPasswordConfirm())) {
+            bindingResult.reject("passwordConfirm");
         }
 
-        if(form.getNickName() != null){
-            User findUser = userService.findByNickName(form.getNickName());
-            if(findUser != null){
-                bindingResult.reject("nickNameDuplicate");
-            }
+        User findUser = userService.findByEmail(form.getEmail());
+        System.out.println("findUser = " + findUser);
+        if(findUser != null){
+            bindingResult.reject("emailDuplicate");
+        }
+
+        User findByNickName = userService.findByNickName(form.getNickName());
+        if(findByNickName != null){
+            bindingResult.reject("nickNameDuplicate");
         }
 
         if(bindingResult.hasErrors()){
@@ -71,5 +75,48 @@ public class UserController {
         return "redirect:/";
     }
 
+    @GetMapping("/user/login")
+    public String login(Model model) {
+        model.addAttribute("user", new UserLoginFormReq());
+        return "user/login";
+    }
+
+    @PostMapping("/user/login")
+    public String loginProcess(@Validated @ModelAttribute("user") UserLoginFormReq form,
+                               BindingResult bindingResult,
+                               HttpServletRequest request){
+
+        if (bindingResult.hasErrors()) {
+            log.info("error = {}", bindingResult);
+            return "user/login";
+        }
+
+        User findByEmailUser = userService.findByEmail(form.getEmail());
+        if (findByEmailUser == null) {
+            bindingResult.reject("nonUserEmail");
+        } else if (!form.getPassword().equals(findByEmailUser.getPassword())) {
+            bindingResult.reject("passwordNotMatch");
+        }
+
+        if (bindingResult.hasErrors()) {
+            log.info("error = {}", bindingResult);
+            return "user/login";
+        }
+
+        HttpSession session = request.getSession();
+        session.setAttribute("loginUser", findByEmailUser);
+        return "redirect:/";
+    }
+
+    @GetMapping("/user/logout")
+    public String logout(HttpServletRequest req){
+
+        log.info("logout!");
+        HttpSession session = req.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
+        return "redirect:/";
+    }
 
 }

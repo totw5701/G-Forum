@@ -1,11 +1,23 @@
 <!DOCTYPE html>
-<html th:replace="~{layout/default :: layout(~{::title},~{::section})}"
+<html th:replace="~{layout/default :: layout(~{::title},~{::section},~{::article})}"
         xmlns:th="http://www.thymeleaf.org">
 
 
 <title>gForum</title>
 
+<article class="control__frame">
+    <div class="authenticate__frame" th:unless="${loginUser}">
+        <span>어서오세요</span>
+        <span><a href="/user/login">로그인</a> | <a href="/user/create">회원가입</a></span>
+    </div>
+    <div class="authenticate__frame" th:if="${loginUser}">
+        <span th:text="${loginUser.getNickName}+'님 어서오세요.'">어서오세요</span>
+        <span><a href="/user/logout">로그아웃</a></span>
+    </div>
+</article>
+
 <section class="body_frame">
+
     <div class="post__top-bar">
         <span class="post__top-bar__num" th:text="#{post.id}">글번호</span>
         <span class="post__top-bar__title" th:text="#{post.title}">제목</span>
@@ -48,6 +60,8 @@
         </form>
     </div>
 </section>
+
+
 
 
 </html>

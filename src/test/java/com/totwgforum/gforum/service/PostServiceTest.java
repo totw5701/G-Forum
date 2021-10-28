@@ -42,7 +42,7 @@ class PostServiceTest {
             Post post = new Post();
             post.setTitle("테스트 더미");
             post.setDescription("테스트용 더미 내용.");
-            post.setAuthor(1L);
+            post.setAuthor(1722L);
             post.setCreated(LocalDateTime.now());
             postService.create(post);
         }

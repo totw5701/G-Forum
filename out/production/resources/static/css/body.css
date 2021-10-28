@@ -211,6 +211,11 @@ ul{
 }
 
 .field-error{
-  border-color: red;
-  color: red;
+  border-color: tomato;
+}
+
+
+.field-error__font{
+  color: tomato;
+  font-weight: bolder;
 }

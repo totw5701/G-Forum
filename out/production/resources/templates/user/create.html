@@ -1,7 +1,18 @@
 <!DOCTYPE html>
-<html th:replace="~{/layout/default :: layout(~{::title},~{::section})}">
+<html th:replace="~{/layout/default :: layout(~{::title},~{::section},~{::article})}">
 
-    <title>CREATE</title>
+<title>CREATE</title>
+
+<article class="control__frame">
+    <div class="authenticate__frame" th:unless="${loginUser}">
+        <span>어서오세요</span>
+        <span><a href="/user/login">로그인</a> | <a href="/user/create">회원가입</a></span>
+    </div>
+    <div class="authenticate__frame" th:if="${loginUser}">
+        <span th:text="${loginUser.getNickName}+'님 어서오세요.'">어서오세요</span>
+        <span><a href="/user/logout">로그아웃</a></span>
+    </div>
+</article>
 
 
 <section class="body_frame">
