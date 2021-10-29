@@ -25,12 +25,9 @@ public class LoginCheckFilter implements Filter {
         String reqURI = req.getRequestURI();
 
         try {
-            log.info("loginFilter START = {}", reqURI);
             if (isWhiteListPath(reqURI)) {
-                log.info("인증 체크 로직 실행 {}", reqURI);
                 HttpSession session = req.getSession(false);
                 if (session == null || session.getAttribute("loginUser") == null) {
-                    log.info("미인증 사용자 요청 {}", reqURI);
                     res.sendRedirect("/user/login");
                     return;
                 }
@@ -39,13 +36,11 @@ public class LoginCheckFilter implements Filter {
         } catch (Exception e) {
             throw e;
         } finally {
-            log.info("loginFilter END = {}", reqURI);
         }
     }
 
     private boolean isWhiteListPath(String reqURI) {
         if (PatternMatchUtils.simpleMatch(blackList, reqURI)) {
-            log.info("blackList={}", reqURI);
             return true;
         }
         return !PatternMatchUtils.simpleMatch(whiteList, reqURI);

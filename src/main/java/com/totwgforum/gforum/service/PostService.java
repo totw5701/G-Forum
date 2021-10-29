@@ -1,6 +1,7 @@
 package com.totwgforum.gforum.service;
 
 import com.totwgforum.gforum.domain.Post;
+import com.totwgforum.gforum.dto.PagingDto;
 import com.totwgforum.gforum.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

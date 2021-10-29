@@ -218,4 +218,5 @@ ul{
 .field-error__font{
   color: tomato;
   font-weight: bolder;
+  margin-top: 10px;
 }

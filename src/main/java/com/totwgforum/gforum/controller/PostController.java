@@ -37,11 +37,11 @@ public class PostController {
     public String createPostProcess(@Validated @ModelAttribute("post") PostSaveFormReq form, BindingResult bindingResult,
                                     @SessionAttribute(name = "loginUser", required = false) User loginUser,
                                     Model model){
-        log.info("form={}",form);
+
+        model.addAttribute("loginUser", loginUser);
 
         if(bindingResult.hasErrors()){
             log.info("error={}", bindingResult);
-            model.addAttribute("loginUser", loginUser);
             return "post/create";
         }
 
@@ -51,7 +51,7 @@ public class PostController {
         post.setTitle(form.getTitle());
         post.setDescription(form.getDescription());
         postService.create(post);
-        return "redirect:/";
+        return "redirect:/posts/"+post.getId();
     }
 
     @GetMapping("/posts/{postId}")
@@ -92,17 +92,17 @@ public class PostController {
 
         Post rowPost = postService.findById(postId);
 
-        PostDtoRes post = new PostDtoRes();
-        post.setId(rowPost.getId());
-        post.setAuthor(rowPost.getAuthor());
-        post.setTitle(rowPost.getTitle());
-        post.setDescription(rowPost.getDescription());
-
         // author와 로그인 한 사용자가 일치하는지 확인
         if (!loginUser.getId().equals(rowPost.getAuthor())) {
             log.info("post/update, 세션과 author가 다름");
             return "redirect:/";
         }
+
+        PostDtoRes post = new PostDtoRes();
+        post.setId(rowPost.getId());
+        post.setAuthor(rowPost.getAuthor());
+        post.setTitle(rowPost.getTitle());
+        post.setDescription(rowPost.getDescription());
 
         model.addAttribute("post", post);
         return "post/update";
@@ -112,14 +112,8 @@ public class PostController {
     public String updatePostProcess(@Validated @ModelAttribute("post") PostUpdateFormReq form, BindingResult bindingResult,
                                     @SessionAttribute(name = "loginUser", required = false) User loginUser){
 
-
-        log.info("form={}", form);
-        log.info("loginUser={}", loginUser);
-
         // author와 로그인 한 사용자가 일치하는지 확인
         if (!loginUser.getId().equals(form.getAuthor())) {
-            log.info("loginUser.getId()={}",loginUser.getId());
-            log.info("form.getAuthor()={}",form.getAuthor());
             log.info("post/update, 세션과 author가 다름");
             return "redirect:/";
         }

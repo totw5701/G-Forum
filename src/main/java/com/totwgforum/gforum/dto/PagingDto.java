@@ -17,8 +17,8 @@ public class PagingDto {
         this.pageNum = pageNum;
         this.nowPage = nowPage;
         int i = (pageNum - nowPage) / 15;
-        pageNumStart = pageNum -15*i;
-        pageNumEnd = pageNum -15*(i+1) +1 ;
+        pageNumStart = pageNum -15 * i;
+        pageNumEnd = pageNum -15 * (i + 1) + 1 ;
         if(pageNumEnd < 1){
             pageNumEnd = 1;
         }

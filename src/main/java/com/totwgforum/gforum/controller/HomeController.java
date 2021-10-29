@@ -30,10 +30,8 @@ public class HomeController {
                        Model model,
                        HttpServletRequest req,
                        @SessionAttribute(name = "loginUser", required = false) User loginUser){
-        // 로그인 유무.
+
         model.addAttribute("loginUser", loginUser);
-
-
 
         // 페이징
         long postCount = postService.findAllCount();
@@ -44,6 +42,7 @@ public class HomeController {
         }
         PagingDto pagingDto = new PagingDto(pageNum, nowPage);
 
+        // post -> postDtoRes
         List<Post> listPosts = postService.findPage(pageNum, nowPage);
         List<PostDtoRes> posts = new ArrayList<>();
         for (Post rowPost : listPosts) {
@@ -52,13 +51,9 @@ public class HomeController {
             post.setId(rowPost.getId());
             String date = rowPost.getCreated().format(DateTimeFormatter.ofPattern("MM-dd"));
             post.setDate(date);
-
-            /* User 정보 가져오기.
             String authorNickname = userService.findById(rowPost.getAuthor()).getNickName();
             post.setAuthorNickname(authorNickname);
-             */
 
-            post.setAuthorNickname("nickName");
             posts.add(post);
         }
 

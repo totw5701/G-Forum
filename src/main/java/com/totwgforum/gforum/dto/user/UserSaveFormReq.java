@@ -3,6 +3,7 @@ package com.totwgforum.gforum.dto.user;
 import lombok.*;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Setter
@@ -13,12 +14,12 @@ import javax.validation.constraints.NotNull;
 public class UserSaveFormReq {
 
     @Email
-    @NotNull
+    @NotBlank
     private String email;
-    @NotNull
+    @NotBlank
     private String nickName;
-    @NotNull
+    @NotBlank
     private String password;
-    @NotNull
+    @NotBlank
     private String passwordConfirm;
 }
