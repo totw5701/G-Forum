@@ -4,6 +4,7 @@
 @import "header.css";
 @import "control.css";
 @import "body.css";
+@import "comment.css";
 
 .main__frame {
   display: flex;
