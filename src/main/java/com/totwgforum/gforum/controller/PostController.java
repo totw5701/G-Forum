@@ -1,5 +1,6 @@
 package com.totwgforum.gforum.controller;
 
+import com.totwgforum.gforum.domain.Comment;
 import com.totwgforum.gforum.domain.Post;
 import com.totwgforum.gforum.domain.User;
 import com.totwgforum.gforum.dto.post.PostDtoRes;
@@ -58,6 +59,7 @@ public class PostController {
     public String detailPost(@PathVariable Long postId, Model model, @SessionAttribute(name = "loginUser", required = false) User loginUser){
 
         model.addAttribute("loginUser", loginUser);
+        model.addAttribute("comment", new Comment());
 
         Post rowPost = postService.findById(postId);
 

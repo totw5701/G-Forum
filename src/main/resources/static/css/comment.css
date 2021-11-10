@@ -33,7 +33,7 @@
 
 .comment__col__date {
     font-size: 10px;
-    margin-right: 20px;
+
 }
 
 .comment__col__description {
@@ -64,4 +64,29 @@
     width: 50px;
     text-align: center;
     font-weight: bold;
+}
+
+.comment-form {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.comment-input {
+    width: 500px;
+    height: 70px;
+    border: 2px solid black;
+    resize: none;
+}
+
+.comment-btn {
+    height: 50px;
+    width: 35px;
+    margin-left: 15px;
+    color: white;
+    border-radius: 10px;
+    background-color: teal;
+    border: none;
 }
