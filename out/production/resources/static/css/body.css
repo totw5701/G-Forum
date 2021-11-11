@@ -150,6 +150,8 @@
 }
 
 .post__detail__description {
+  word-break: break-all;
+  white-space: pre-line;
   overflow: initial;
   margin-top: 10px;
   line-height: 25px;

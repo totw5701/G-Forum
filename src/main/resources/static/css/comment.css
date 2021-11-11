@@ -55,6 +55,8 @@
     font-weight: bold;
 }
 .comment__list__description {
+    word-break: break-all;
+    white-space: pre-line;
     padding-left: 10px;
     padding-right: 10px;
     text-align: left;

@@ -65,7 +65,7 @@
             <div th:each="comment : ${comments}">
                 <div class="comment__list__box" th:object="${comment}">
                     <span class="comment__list__author" th:text="*{author}">nickName</span>
-                    <span class="comment__list__description" th:text="*{description}">니ㅓ오랴ㅕㄴㅇㄹ ㅣㄴ러ㅏㄴㅇ리ㅓ낭</span>
+                    <p class="comment__list__description" th:text="*{description}">니ㅓ오랴ㅕㄴㅇㄹ ㅣㄴ러ㅏㄴㅇ리ㅓ낭</p>
                     <span class="comment__list__date" th:text="*{created}">date</span>
                     <div class="comment-control">
                         <a>수정</a>
