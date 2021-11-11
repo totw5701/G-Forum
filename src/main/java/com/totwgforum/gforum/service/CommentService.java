@@ -38,6 +38,10 @@ public class CommentService {
         return oldOne;
     }
 
+    public List<Comment> findAllInPost(Long postId) {
+        return commentRepository.findAllInPost(postId);
+    }
+
     public List<Comment> findAll(){
          return commentRepository.findAll();
     }

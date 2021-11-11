@@ -3,9 +3,12 @@ package com.totwgforum.gforum.controller;
 import com.totwgforum.gforum.domain.Comment;
 import com.totwgforum.gforum.domain.Post;
 import com.totwgforum.gforum.domain.User;
+import com.totwgforum.gforum.dto.comment.CommentDtoRes;
+import com.totwgforum.gforum.dto.comment.CommentSaveFormReq;
 import com.totwgforum.gforum.dto.post.PostDtoRes;
 import com.totwgforum.gforum.dto.post.PostSaveFormReq;
 import com.totwgforum.gforum.dto.post.PostUpdateFormReq;
+import com.totwgforum.gforum.service.CommentService;
 import com.totwgforum.gforum.service.PostService;
 import com.totwgforum.gforum.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +21,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @Controller
@@ -26,6 +31,7 @@ public class PostController {
 
     private final PostService postService;
     private final UserService userService;
+    private final CommentService commentService;
 
     @GetMapping("/posts/create")
     public String createPostForm(Model model, @SessionAttribute(name = "loginUser", required = false) User loginUser){
@@ -84,6 +90,24 @@ public class PostController {
         post.setAuthor(author.getId());
 
         model.addAttribute("post", post);
+
+        List<Comment> rowComments = commentService.findAllInPost(rowPost.getId());
+        System.out.println("rowComments = " + rowComments);
+        List<CommentDtoRes> comments = new ArrayList<>();
+        for (Comment c : rowComments) {
+            CommentDtoRes comment = new CommentDtoRes();
+            comment.setId(c.getId());
+            comment.setDescription(c.getDescription());
+            comment.setCreated(c.getCreated().format(DateTimeFormatter.ofPattern("MM-dd")));
+
+            User commentAuthor = userService.findById(c.getAuthor());
+            comment.setAuthor(commentAuthor.getNickName());
+
+            comments.add(comment);
+        }
+
+        model.addAttribute("comments", comments);
+
         return "post/detail";
     }
 

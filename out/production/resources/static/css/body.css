@@ -129,6 +129,9 @@
 
 .post__detail__metaInfo {
   display: flex;
+  padding-bottom: 15px;
+  border-bottom: solid 2px #979797;
+
 }
 
 .post__detail__author {
@@ -149,9 +152,8 @@
 .post__detail__description {
   overflow: initial;
   margin-top: 10px;
-  border-top: solid 2px #979797;
-  padding-top: 15px;
   line-height: 25px;
+  width: 570px;
 }
 
 .body_frame_sub {

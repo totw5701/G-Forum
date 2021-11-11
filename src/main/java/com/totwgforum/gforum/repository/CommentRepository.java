@@ -26,6 +26,11 @@ public class CommentRepository {
         return em.createQuery("select c from Comment c order by c.id desc", Comment.class).getResultList();
     }
 
+    public List<Comment> findAllInPost(Long postId) {
+        String query = "select c from Comment c where c.postId = "+postId+" order by c.id";
+        return em.createQuery(query, Comment.class).getResultList();
+    }
+
     public void remove(Comment comment){
         em.remove(comment);
     }

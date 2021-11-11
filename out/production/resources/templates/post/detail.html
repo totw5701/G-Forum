@@ -45,10 +45,11 @@
     <span class="comment-comment" th:text="#{comment.title}">댓글</span>
 
     <div class="comment-cont">
-        <form action="/comment/create" th:action class="comment-form" th:if="${loginUser}" th:object="${comment}">
-            <input type="hidden" name="author" th:field="*{author}" th:value="${loginUser.id}">
-            <input type="hidden" name="postId" th:field="*{postId}" th:value="${post.id}">
-            <textarea class="comment-input" th:field="*{description}"></textarea>
+        <form action="/comment/create" class="comment-form" method="post" th:if="${loginUser}" th:object="${comment}">
+
+            <input type="hidden" name="author" id="author" th:id="author" th:value="${loginUser.id}">
+            <input type="hidden" name="postId" id="postId" th:id="postId" th:value="${post.id}">
+            <textarea class="comment-input" maxlength="50" th:field="*{description}"></textarea>
             <button class="comment-btn" type="submit" th:text="#{button.create}">submit</button>
         </form>
 
@@ -60,28 +61,18 @@
         </div>
 
         <div>
-            <div>
-                <div class="comment__list__box">
-                    <span class="comment__list__author">nickName</span>
-                    <span class="comment__list__description">니ㅓ오랴ㅕㄴㅇㄹ ㅣㄴ러ㅏㄴㅇ리ㅓ낭</span>
-                    <span class="comment__list__date">date</span>
+            <div class="comment__list__box" th:else="${comments}"></div>
+            <div th:each="comment : ${comments}">
+                <div class="comment__list__box" th:object="${comment}">
+                    <span class="comment__list__author" th:text="*{author}">nickName</span>
+                    <span class="comment__list__description" th:text="*{description}">니ㅓ오랴ㅕㄴㅇㄹ ㅣㄴ러ㅏㄴㅇ리ㅓ낭</span>
+                    <span class="comment__list__date" th:text="*{created}">date</span>
                     <div class="comment-control">
                         <a>수정</a>
                         <button>삭제</button>
                     </div>
                 </div>
-                <div class="comment__list__box">
-                    <span class="comment__list__author">nickName</span>
-                    <span class="comment__list__description">니ㅓㅇ러ㅣㅏㅁ노리ㅓㅏㄴ오러노ㅓㅏㅇ롬나ㅣ어론아론이ㅏㅓ론아ㅓㅣ론어ㅏ론어ㅏ로ㅠㅇ너ㅏ륜아ㅓ륜어ㅏㄹ
-                            ㄴㄹㄴ어론어ㅏㅣ롷ㄴ잃ㄴ이ㅗㄹㅎㄴ아ㅣ런와ㅓㅣㄹㄴㅇ라ㅓㄴ오ㅓ라ㅣㅇ노리ㅓㅏㅇ노러ㅣㅇ노러ㅣㄴ오러ㅣ뇌론ㄹㄴㅁ
-                            런아;롱ㄴ;ㅣㅓ운밀ㅇ누리;ㅁ뉘ㅜ
-                        </span>
-                    <span class="comment__list__date">date</span>
-                    <div class="comment-control">
-                        <a>수정</a>
-                        <button>삭제</button>
-                    </div>
-                </div>
+
             </div>
         </div>
 

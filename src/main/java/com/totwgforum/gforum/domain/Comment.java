@@ -13,6 +13,7 @@ public class Comment {
     @Id @GeneratedValue
     private Long id;
 
+    @Column(columnDefinition = "TEXT")
     private String description;
     private LocalDateTime created;
     private Long author;
