@@ -16,6 +16,6 @@ public class CommentDtoRes {
     private String description;
     private String created;
     private String author;
-
+    private Long authorId;
 
 }

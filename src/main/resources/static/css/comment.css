@@ -30,11 +30,12 @@
 .comment__col__author {
     font-size: 10px;
     margin-left: 20px;
+    padding-left: 15px;
 }
 
 .comment__col__date {
     font-size: 10px;
-
+    padding-right: 10px;
 }
 
 .comment__col__description {
@@ -92,4 +93,31 @@
     border-radius: 10px;
     background-color: teal;
     border: none;
+}
+
+.comment-control{
+    width: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.comment-update-btn{
+    width: 25px;
+    height: 25px;
+    color: white;
+    border-radius: 5px;
+    background-color: teal;
+    border: none;
+    font-size: 13px;
+}
+
+.comment-delete-btn{
+    width: 25px;
+    height: 25px;
+    color: white;
+    border-radius: 5px;
+    background-color: teal;
+    border: none;
+    font-size: 13px;
 }

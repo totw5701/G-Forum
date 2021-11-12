@@ -78,6 +78,7 @@ public class PostController {
             }
         }
 
+
         PostDtoRes post = new PostDtoRes();
         post.setTitle(rowPost.getTitle());
         post.setDescription(rowPost.getDescription());
@@ -102,6 +103,7 @@ public class PostController {
 
             User commentAuthor = userService.findById(c.getAuthor());
             comment.setAuthor(commentAuthor.getNickName());
+            comment.setAuthorId(c.getAuthor());
 
             comments.add(comment);
         }

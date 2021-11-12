@@ -1,10 +1,8 @@
 package com.totwgforum.gforum.controller;
 
 import com.totwgforum.gforum.domain.Comment;
-import com.totwgforum.gforum.domain.Post;
 import com.totwgforum.gforum.domain.User;
 import com.totwgforum.gforum.dto.comment.CommentSaveFormReq;
-import com.totwgforum.gforum.dto.post.PostSaveFormReq;
 import com.totwgforum.gforum.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,9 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 
@@ -26,7 +22,7 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping("/comment/create")
-    public String createCommentProcess(@Validated @ModelAttribute("comment")CommentSaveFormReq form, BindingResult bindingResult,
+    public String createCommentProcess(@Validated @ModelAttribute("comment") CommentSaveFormReq form, BindingResult bindingResult,
                                        @SessionAttribute(name = "loginUser", required = false) User loginUser,
                                        Model model) {
 
@@ -53,7 +49,22 @@ public class CommentController {
         return "redirect:/posts/" + form.getPostId();
     }
 
+    @PostMapping("/comment/delete")
+    public String deleteComment(@RequestParam("id") Long commentId,
+                                @RequestParam("postId") Long postId,
+                                @SessionAttribute(name = "loginUser", required = false) User loginUser) {
 
+        Comment comment = commentService.findById(commentId);
 
+        if (loginUser == null) {
+            return "redirect:/posts/" + postId;
+        }
 
+        if (!loginUser.getId().equals(comment.getAuthor())) {
+            return "redirect:/posts/" + postId;
+        }
+
+        commentService.delete(commentId);
+        return "redirect:/posts/" + postId;
+    }
 }

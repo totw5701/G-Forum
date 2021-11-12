@@ -67,9 +67,15 @@
                     <span class="comment__list__author" th:text="*{author}">nickName</span>
                     <p class="comment__list__description" th:text="*{description}">니ㅓ오랴ㅕㄴㅇㄹ ㅣㄴ러ㅏㄴㅇ리ㅓ낭</p>
                     <span class="comment__list__date" th:text="*{created}">date</span>
-                    <div class="comment-control">
-                        <a>수정</a>
-                        <button>삭제</button>
+                    <div class="comment-control" >
+
+                        <div th:if="${loginUser}" class="comment-control">
+                            <form action="/comment/delete" method="post" th:if="${loginUser.id} == ${comment.authorId}">
+                                <input type="hidden" name="id" th:value="*{id}">
+                                <input type="hidden" name="postId" th:value="${post.id}">
+                                <button type="submit" class="comment-delete-btn">삭제</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
 
