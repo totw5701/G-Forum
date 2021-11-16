@@ -18,6 +18,7 @@ public class Comment {
     private LocalDateTime created;
     private Long author;
 
-    private Long postId;
+    @ManyToOne
+    private Post post;
 
 }

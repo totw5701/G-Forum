@@ -51,7 +51,7 @@ public class HomeController {
             post.setId(rowPost.getId());
             String date = rowPost.getCreated().format(DateTimeFormatter.ofPattern("MM-dd"));
             post.setDate(date);
-            String authorNickname = userService.findById(rowPost.getAuthor()).getNickName();
+            String authorNickname = userService.findById(rowPost.getUser().getId()).getNickName();
             post.setAuthorNickname(authorNickname);
 
             posts.add(post);
@@ -91,7 +91,7 @@ public class HomeController {
             post.setId(rowPost.getId());
             String date = rowPost.getCreated().format(DateTimeFormatter.ofPattern("MM-dd"));
             post.setDate(date);
-            String authorNickname = userService.findById(rowPost.getAuthor()).getNickName();
+            String authorNickname = userService.findById(rowPost.getUser().getId()).getNickName();
             post.setAuthorNickname(authorNickname);
 
             posts.add(post);

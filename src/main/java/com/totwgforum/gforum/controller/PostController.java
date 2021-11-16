@@ -52,12 +52,17 @@ public class PostController {
             return "post/create";
         }
 
+        User user = userService.findById(form.getAuthor());
+
         Post post = new Post();
         post.setCreated(LocalDateTime.now());
-        post.setAuthor(form.getAuthor());
+        post.setUser(user);
         post.setTitle(form.getTitle());
         post.setDescription(form.getDescription());
         postService.create(post);
+
+        user.getPosts().add(post);
+
         return "redirect:/posts/"+post.getId();
     }
 
@@ -71,7 +76,7 @@ public class PostController {
 
         if (loginUser != null) {
             // 세션 유저와 author가 일치하는지 확인하여 boolean값을 렌더링.
-            if (loginUser.getId().equals(rowPost.getAuthor())) {
+            if (loginUser.getId().equals(rowPost.getUser().getId())) {
                 model.addAttribute("isAuthorLogin", true);
             } else {
                 model.addAttribute("isAuthorLogin", false);
@@ -86,7 +91,7 @@ public class PostController {
         String date = rowPost.getCreated().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm"));
         post.setDate(date);
 
-        User author = userService.findById(rowPost.getAuthor());
+        User author = userService.findById(rowPost.getUser().getId());
         post.setAuthorNickname(author.getNickName());
         post.setAuthor(author.getId());
 
@@ -122,14 +127,14 @@ public class PostController {
         Post rowPost = postService.findById(postId);
 
         // author와 로그인 한 사용자가 일치하는지 확인
-        if (!loginUser.getId().equals(rowPost.getAuthor())) {
+        if (!loginUser.getId().equals(rowPost.getUser().getId())) {
             log.info("post/update, 세션과 author가 다름");
             return "redirect:/";
         }
 
         PostDtoRes post = new PostDtoRes();
         post.setId(rowPost.getId());
-        post.setAuthor(rowPost.getAuthor());
+        post.setAuthor(rowPost.getUser().getId());
         post.setTitle(rowPost.getTitle());
         post.setDescription(rowPost.getDescription());
 

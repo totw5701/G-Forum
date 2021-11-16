@@ -27,7 +27,7 @@ public class CommentRepository {
     }
 
     public List<Comment> findAllInPost(Long postId) {
-        String query = "select c from Comment c where c.postId = "+postId+" order by c.id";
+        String query = "select c from Comment c where c.post.id = "+postId+" order by c.id";
         return em.createQuery(query, Comment.class).getResultList();
     }
 
