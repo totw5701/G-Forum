@@ -90,6 +90,7 @@ public class PostController {
         post.setAuthorNickname(author.getNickName());
         post.setAuthor(author.getId());
 
+
         model.addAttribute("post", post);
 
         List<Comment> rowComments = commentService.findAllInPost(rowPost.getId());

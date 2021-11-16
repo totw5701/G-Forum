@@ -17,6 +17,7 @@ public class Comment {
     private String description;
     private LocalDateTime created;
     private Long author;
+
     private Long postId;
 
 }

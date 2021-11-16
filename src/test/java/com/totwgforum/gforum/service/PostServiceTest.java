@@ -40,9 +40,9 @@ class PostServiceTest {
     public void 더미데이터넣기(){
         for(int i = 0; i < 300; i++) {
             Post post = new Post();
-            post.setTitle("테스트 더미");
+            post.setTitle("asdasd");
             post.setDescription("테스트용 더미 내용.");
-            post.setAuthor(1722L);
+            post.setAuthor(1L);
             post.setCreated(LocalDateTime.now());
             postService.create(post);
         }

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html th:replace="~{layout/default :: layout(~{::title},~{::section},~{::article})}"
+        xmlns:th="http://www.thymeleaf.org">
+
+
+<title>gForum</title>
+
+<article class="control__frame">
+    <div class="authenticate__frame" th:unless="${loginUser}">
+        <span>어서오세요</span>
+        <span><a href="/user/login">로그인</a> | <a href="/user/create">회원가입</a></span>
+    </div>
+    <div class="authenticate__frame" th:if="${loginUser}">
+        <span th:text="${loginUser.getNickName}+'님 어서오세요.'">어서오세요</span>
+        <span><a href="/user/logout">로그아웃</a></span>
+    </div>
+</article>
+
+<section class="body_frame">
+
+    <div class="post__top-bar">
+        <span class="post__top-bar__num" th:text="#{post.id}">글번호</span>
+        <span class="post__top-bar__title" th:text="#{post.title}">제목</span>
+        <span class="post__top-bar__date" th:text="#{post.created}">날짜</span>
+        <span class="post__top-bar__author" th:text="#{post.author}">작성자</span>
+    </div>
+
+    <div class="post__list">
+        <!-- List -->
+        <ul th:each="post : ${posts}">
+            <a href='/posts/postsId' th:href="@{/posts/{id} (id=${post.id})}" class="post__ul">
+                <span class="post__list__num" th:text="${post.id}">1</span>
+                <span class="post__list__title" th:text="${post.title}">title1</span>
+                <span class="post__list__date" th:text="${post.date}">date</span>
+                <span class="post__list__author" th:text="${post.authorNickname}">nickName</span>
+            </a>
+        </ul>
+    </div>
+
+    <div class="post__bottom-bar">
+        <div></div>
+        <div class="post__page-num">
+            <div th:if="${pagingDto.isFirst() == false}" >
+                <a style="margin-right:12px;" href="/?page=#" th:href="@{/search?searchPost={sp}&page={pn} (sp=${keyword}, pn=${pagingDto.pageNumStart+1})}" ><</a>
+            </div>
+            <a th:each="num : ${#numbers.sequence(pagingDto.pageNumStart, pagingDto.pageNumEnd)}" class="post__page-num__element" th:class="${num == pagingDto.nowPage? 'post\_\_page-num\_\_element--selected':'post\_\_page-num\_\_element'}" href="/?page=#" th:href="@{/search?searchPost={sp}&page={pn} (sp=${keyword}, pn=${num})}" th:text="${num}">4</a>
+            <div th:if="${pagingDto.isLast() == false}">
+                <a style="margin-left: 10px"; href="/?page=#" th:href="@{/search?searchPost={sp}&page={pn} (sp=${keyword}, pn=${pagingDto.pageNumEnd-1})}">></a>
+            </div>
+        </div>
+        <div>
+            <a href="/posts/create" class="control__fram__button" th:text="#{button.create}">CREATE</a>
+        </div>
+    </div>
+
+    <div class="searchBox__frame">
+        <form class="searchBox" action="/search" method="get">
+            <input class="searchPost__input" type="text" name="searchPost">
+            <button class="searchPost__button" type="submit"><i class="fas fa-search"></i></button>
+        </form>
+    </div>
+</section>
+
+
+
+
+</html>

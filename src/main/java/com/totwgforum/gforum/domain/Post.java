@@ -22,6 +22,8 @@ public class Post {
     @Column(columnDefinition = "TEXT")
     private String description;
     private LocalDateTime created;
+
+    
     private Long author;
 
 }

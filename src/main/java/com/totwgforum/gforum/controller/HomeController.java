@@ -61,4 +61,46 @@ public class HomeController {
         model.addAttribute("pagingDto", pagingDto);
         return "home";
     }
+
+    @GetMapping("/search")
+    public String home(@RequestParam(value="searchPost", required=true) String keyword,
+                        @RequestParam(value="page", required=false) Integer nowPage,
+                       Model model,
+                       HttpServletRequest req,
+                       @SessionAttribute(name = "loginUser", required = false) User loginUser){
+
+        model.addAttribute("loginUser", loginUser);
+
+
+
+        // 페이징
+        long postCount = postService.findAllCountSearch(keyword);
+        int pageNum = (int)(postCount/20 + 1);
+        if(postCount%20 == 0) pageNum--;
+        if(nowPage == null){
+            nowPage = pageNum;
+        }
+        PagingDto pagingDto = new PagingDto(pageNum, nowPage);
+
+        // post -> postDtoRes
+        List<Post> listPosts = postService.findPageSearch(pageNum, nowPage, keyword);
+        List<PostDtoRes> posts = new ArrayList<>();
+        for (Post rowPost : listPosts) {
+            PostDtoRes post = new PostDtoRes();
+            post.setTitle(rowPost.getTitle());
+            post.setId(rowPost.getId());
+            String date = rowPost.getCreated().format(DateTimeFormatter.ofPattern("MM-dd"));
+            post.setDate(date);
+            String authorNickname = userService.findById(rowPost.getAuthor()).getNickName();
+            post.setAuthorNickname(authorNickname);
+
+            posts.add(post);
+        }
+
+        model.addAttribute("posts", posts);
+        model.addAttribute("pagingDto", pagingDto);
+        model.addAttribute("keyword", keyword);
+        return "search";
+    }
+
 }

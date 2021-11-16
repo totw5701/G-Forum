@@ -47,9 +47,20 @@ public class PostService {
         return (long)count;
     }
 
+    public long findAllCountSearch(String keyword){
+        Object count = postRepository.findCountSearch(keyword);
+        return (long)count;
+    }
+
     public List<Post> findPage(int pageNum, int nowPage){
         int reverseNowPage = pageNum - nowPage;
         List<Post> findList = postRepository.findList(reverseNowPage);
+        return findList;
+    }
+
+    public List<Post> findPageSearch(int pageNum, int nowPage, String keyword){
+        int reverseNowPage = pageNum - nowPage;
+        List<Post> findList = postRepository.findListSearch(reverseNowPage, keyword);
         return findList;
     }
 

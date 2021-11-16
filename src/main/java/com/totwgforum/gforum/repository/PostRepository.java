@@ -35,8 +35,21 @@ public class PostRepository {
         return em.createQuery("select count(p) from Post p").getSingleResult();
     }
 
+    public Object findCountSearch(String keyword){
+        String query = "select count(p) from Post p where p.title LIKE '%" + keyword + "%'";
+        return em.createQuery(query).getSingleResult();
+    }
+
     public List<Post> findList(int pageNum){
         return em.createQuery("select p from Post p order by p.id desc", Post.class)
+                .setFirstResult(pageNum*20)
+                .setMaxResults(20)
+                .getResultList();
+    }
+
+    public List<Post> findListSearch(int pageNum, String keyword){
+        String query = "select p from Post p where p.title LIKE '%" + keyword + "%' order by p.id desc ";
+        return em.createQuery(query, Post.class)
                 .setFirstResult(pageNum*20)
                 .setMaxResults(20)
                 .getResultList();
