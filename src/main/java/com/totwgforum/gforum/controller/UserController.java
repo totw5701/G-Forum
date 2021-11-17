@@ -6,6 +6,7 @@ import com.totwgforum.gforum.dto.post.PostSaveFormReq;
 import com.totwgforum.gforum.dto.user.UserLoginFormReq;
 import com.totwgforum.gforum.dto.user.UserSaveFormReq;
 import com.totwgforum.gforum.service.UserService;
+import com.totwgforum.gforum.util.SHA256;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -65,11 +66,14 @@ public class UserController {
             return "user/create";
         }
 
+
         User user = new User();
         user.setEmail(form.getEmail());
         user.setNickName(form.getNickName());
         user.setRegisterDate(LocalDateTime.now());
-        user.setPassword(form.getPassword());
+
+        String secuPW = SHA256.convert(form.getPassword());
+        user.setPassword(secuPW);
 
         userService.join(user);
         return "redirect:/";
@@ -94,7 +98,7 @@ public class UserController {
         User findByEmailUser = userService.findByEmail(form.getEmail());
         if (findByEmailUser == null) {
             bindingResult.reject("nonUserEmail");
-        } else if (!form.getPassword().equals(findByEmailUser.getPassword())) {
+        } else if (!SHA256.convert(form.getPassword()).equals(findByEmailUser.getPassword())) {
             bindingResult.reject("passwordNotMatch");
         }
 
