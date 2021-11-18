@@ -1,6 +1,5 @@
 package com.totwgforum.gforum.repository;
 
-import com.totwgforum.gforum.domain.Post;
 import com.totwgforum.gforum.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;

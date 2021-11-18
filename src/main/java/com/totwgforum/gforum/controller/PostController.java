@@ -1,10 +1,8 @@
 package com.totwgforum.gforum.controller;
 
 import com.totwgforum.gforum.domain.Comment;
-import com.totwgforum.gforum.domain.Post;
 import com.totwgforum.gforum.domain.User;
 import com.totwgforum.gforum.dto.comment.CommentDtoRes;
-import com.totwgforum.gforum.dto.comment.CommentSaveFormReq;
 import com.totwgforum.gforum.dto.post.PostDtoRes;
 import com.totwgforum.gforum.dto.post.PostSaveFormReq;
 import com.totwgforum.gforum.dto.post.PostUpdateFormReq;
@@ -19,9 +17,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -52,18 +47,9 @@ public class PostController {
             return "post/create";
         }
 
-        User user = userService.findById(form.getAuthor());
+        Long postId = postService.create(form);
 
-        Post post = new Post();
-        post.setCreated(LocalDateTime.now());
-        post.setUser(user);
-        post.setTitle(form.getTitle());
-        post.setDescription(form.getDescription());
-        postService.create(post);
-
-        user.getPosts().add(post);
-
-        return "redirect:/posts/"+post.getId();
+        return "redirect:/posts/"+postId;
     }
 
     @GetMapping("/posts/{postId}")
@@ -72,47 +58,19 @@ public class PostController {
         model.addAttribute("loginUser", loginUser);
         model.addAttribute("comment", new Comment());
 
-        Post rowPost = postService.findById(postId);
+        PostDtoRes post = postService.findById(postId);
 
         if (loginUser != null) {
             // 세션 유저와 author가 일치하는지 확인하여 boolean값을 렌더링.
-            if (loginUser.getId().equals(rowPost.getUser().getId())) {
+            if (loginUser.getId().equals(post.getAuthor())) {
                 model.addAttribute("isAuthorLogin", true);
             } else {
                 model.addAttribute("isAuthorLogin", false);
             }
         }
-
-
-        PostDtoRes post = new PostDtoRes();
-        post.setTitle(rowPost.getTitle());
-        post.setDescription(rowPost.getDescription());
-        post.setId(rowPost.getId());
-        String date = rowPost.getCreated().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm"));
-        post.setDate(date);
-
-        User author = userService.findById(rowPost.getUser().getId());
-        post.setAuthorNickname(author.getNickName());
-        post.setAuthor(author.getId());
-
-
         model.addAttribute("post", post);
 
-        List<Comment> rowComments = commentService.findAllInPost(rowPost.getId());
-        System.out.println("rowComments = " + rowComments);
-        List<CommentDtoRes> comments = new ArrayList<>();
-        for (Comment c : rowComments) {
-            CommentDtoRes comment = new CommentDtoRes();
-            comment.setId(c.getId());
-            comment.setDescription(c.getDescription());
-            comment.setCreated(c.getCreated().format(DateTimeFormatter.ofPattern("MM-dd")));
-
-            User commentAuthor = userService.findById(c.getAuthor());
-            comment.setAuthor(commentAuthor.getNickName());
-            comment.setAuthorId(c.getAuthor());
-
-            comments.add(comment);
-        }
+        List<CommentDtoRes> comments = commentService.findAllInPost(post.getId());
 
         model.addAttribute("comments", comments);
 
@@ -124,19 +82,14 @@ public class PostController {
 
         model.addAttribute("loginUser", loginUser);
 
-        Post rowPost = postService.findById(postId);
+        PostDtoRes post = postService.findById(postId);
 
         // author와 로그인 한 사용자가 일치하는지 확인
-        if (!loginUser.getId().equals(rowPost.getUser().getId())) {
+        if (!loginUser.getId().equals(post.getAuthor())) {
             log.info("post/update, 세션과 author가 다름");
             return "redirect:/";
         }
 
-        PostDtoRes post = new PostDtoRes();
-        post.setId(rowPost.getId());
-        post.setAuthor(rowPost.getUser().getId());
-        post.setTitle(rowPost.getTitle());
-        post.setDescription(rowPost.getDescription());
 
         model.addAttribute("post", post);
         return "post/update";
@@ -157,10 +110,7 @@ public class PostController {
             return "post/update";
         }
 
-        Post post = new Post();
-        post.setTitle(form.getTitle());
-        post.setDescription(form.getDescription());
-        postService.update(form.getId(), post);
+        postService.update(form.getId(), form);
         return "redirect:/posts/" + form.getId();
     }
 

@@ -1,13 +1,18 @@
 package com.totwgforum.gforum.service;
 
 import com.totwgforum.gforum.domain.Comment;
-import com.totwgforum.gforum.domain.Post;
+import com.totwgforum.gforum.dto.comment.CommentDtoRes;
+import com.totwgforum.gforum.dto.comment.CommentSaveFormReq;
 import com.totwgforum.gforum.repository.CommentRepository;
 import com.totwgforum.gforum.repository.PostRepository;
+import com.totwgforum.gforum.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -16,38 +21,58 @@ import java.util.List;
 public class CommentService {
 
     private final CommentRepository commentRepository;
+    private final PostRepository postRepository;
+    private final UserRepository userRepository;
 
-    public Long create(Comment comment){
+    public Long create(CommentSaveFormReq form){
+
+        Comment comment = new Comment();
+        comment.setDescription(form.getDescription());
+        comment.setAuthor(userRepository.findOne(form.getAuthor()));
+        comment.setCreated(LocalDateTime.now());
+        comment.setPost(postRepository.findOne(form.getPostId()));
+
         commentRepository.save(comment);
         return comment.getId();
     }
 
     public Boolean delete(Long commentId){
-        Comment findOne = commentRepository.findOne(commentId);
-        commentRepository.remove(findOne);
-        if(findOne == null){
+        Comment entity = commentRepository.findOne(commentId);
+        commentRepository.remove(entity);
+        if(entity == null){
             return true;
         }
         return false;
     }
 
-    public Comment update(Long commentId, Comment newOne){
-        // dirty checking
-        Comment oldOne = commentRepository.findOne(commentId);
-        oldOne.setDescription(newOne.getDescription());
-        return oldOne;
+    public List<CommentDtoRes> findAllInPost(Long postId) {
+        List<Comment> entities = commentRepository.findAllInPost(postId);
+
+        List<CommentDtoRes> comments = new ArrayList<>();
+        for (Comment entity : entities) {
+            CommentDtoRes comment = new CommentDtoRes();
+            comment.setId(entity.getId());
+            comment.setAuthor(entity.getAuthor().getNickName());
+            comment.setAuthorId(entity.getAuthor().getId());
+            comment.setDescription(entity.getDescription());
+            comment.setCreated(entity.getCreated().format(DateTimeFormatter.ofPattern("MM-dd")));
+
+            comments.add(comment);
+        }
+
+        return comments;
     }
 
-    public List<Comment> findAllInPost(Long postId) {
-        return commentRepository.findAllInPost(postId);
-    }
+    public CommentDtoRes findById(Long commentId){
+        Comment entity = commentRepository.findOne(commentId);
 
-    public List<Comment> findAll(){
-         return commentRepository.findAll();
-    }
+        CommentDtoRes comment = new CommentDtoRes();
+        comment.setId(entity.getId());
+        comment.setAuthor(entity.getAuthor().getNickName());
+        comment.setAuthorId(entity.getAuthor().getId());
+        comment.setCreated(entity.getCreated().format(DateTimeFormatter.ofPattern("MM-dd")));
 
-    public Comment findById(Long commentId){
-        return commentRepository.findOne(commentId);
+        return comment;
     }
 
 }

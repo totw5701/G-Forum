@@ -1,8 +1,6 @@
 package com.totwgforum.gforum.controller;
 
-import com.totwgforum.gforum.domain.Post;
 import com.totwgforum.gforum.domain.User;
-import com.totwgforum.gforum.dto.post.PostSaveFormReq;
 import com.totwgforum.gforum.dto.user.UserLoginFormReq;
 import com.totwgforum.gforum.dto.user.UserSaveFormReq;
 import com.totwgforum.gforum.service.UserService;
@@ -16,7 +14,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.SessionAttribute;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;

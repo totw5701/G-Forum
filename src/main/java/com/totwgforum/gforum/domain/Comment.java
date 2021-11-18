@@ -16,9 +16,13 @@ public class Comment {
     @Column(columnDefinition = "TEXT")
     private String description;
     private LocalDateTime created;
-    private Long author;
 
     @ManyToOne
+    @JoinColumn(name = "USER_ID")
+    private User author;
+
+    @ManyToOne
+    @JoinColumn(name = "POST_ID")
     private Post post;
 
 }

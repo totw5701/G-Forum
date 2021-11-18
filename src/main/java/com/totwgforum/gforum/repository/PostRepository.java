@@ -17,6 +17,8 @@ public class PostRepository {
 
     public void save(Post post){
         em.persist(post);
+//        em.flush();
+//        Long id = post.getId();
     }
 
     public Post findOne(Long postId){
