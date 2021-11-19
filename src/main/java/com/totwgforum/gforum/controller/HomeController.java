@@ -3,6 +3,7 @@ package com.totwgforum.gforum.controller;
 import com.totwgforum.gforum.domain.User;
 import com.totwgforum.gforum.dto.PagingDto;
 import com.totwgforum.gforum.dto.post.PostDtoRes;
+import com.totwgforum.gforum.dto.user.UserDtoSession;
 import com.totwgforum.gforum.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -24,7 +25,7 @@ public class HomeController {
     public String home(@RequestParam(value="page", required=false) Integer nowPage,
                        Model model,
                        HttpServletRequest req,
-                       @SessionAttribute(name = "loginUser", required = false) User loginUser){
+                       @SessionAttribute(name = "loginUser", required = false) UserDtoSession loginUser){
 
         model.addAttribute("loginUser", loginUser);
 
@@ -50,7 +51,7 @@ public class HomeController {
                         @RequestParam(value="page", required=false) Integer nowPage,
                        Model model,
                        HttpServletRequest req,
-                       @SessionAttribute(name = "loginUser", required = false) User loginUser){
+                       @SessionAttribute(name = "loginUser", required = false) UserDtoSession loginUser){
 
         model.addAttribute("loginUser", loginUser);
 

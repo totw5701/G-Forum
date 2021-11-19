@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Repository
@@ -19,6 +20,24 @@ public class UserRepository {
 
     public User findOne(Long id){
         return em.find(User.class, id);
+    }
+
+    public User findByEmail(String email) {
+        List<User> result = em.createQuery("SELECT u FROM User u WHERE u.email ='" + email + "'", User.class).getResultList();
+        if (result.isEmpty()) {
+            return null;
+        } else {
+            return result.get(0);
+        }
+    }
+
+    public User findByNickName(String nickName) {
+        List<User> result = em.createQuery("SELECT u FROM User u WHERE u.nickName ='" + nickName + "'", User.class).getResultList();
+        if (result.isEmpty()) {
+            return null;
+        } else {
+            return result.get(0);
+        }
     }
 
     public List<User> findAll(){

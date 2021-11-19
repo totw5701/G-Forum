@@ -1,10 +1,12 @@
 package com.totwgforum.gforum.service;
 
+import com.totwgforum.gforum.domain.Comment;
 import com.totwgforum.gforum.domain.Post;
 import com.totwgforum.gforum.domain.User;
 import com.totwgforum.gforum.dto.post.PostDtoRes;
 import com.totwgforum.gforum.dto.post.PostSaveFormReq;
 import com.totwgforum.gforum.dto.post.PostUpdateFormReq;
+import com.totwgforum.gforum.repository.CommentRepository;
 import com.totwgforum.gforum.repository.PostRepository;
 import com.totwgforum.gforum.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +25,7 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final UserRepository userRepository;
+    private final CommentRepository commentRepository;
 
     public Long create(PostSaveFormReq form){
 
@@ -41,11 +44,20 @@ public class PostService {
 
     public Boolean delete(Long postId){
         Post findOne = postRepository.findOne(postId);
-        postRepository.remove(findOne);
-        if(findOne == null){
-            return true;
+
+        if (findOne == null) {
+            return false;
         }
-        return false;
+
+        // 댓글 삭제 먼저?
+        List<Comment> comments = findOne.getComments();
+        for (Comment comment : comments) {
+            commentRepository.remove(comment);
+        }
+
+        postRepository.remove(findOne);
+
+        return true;
     }
 
     public Long update(Long postId, PostUpdateFormReq form){

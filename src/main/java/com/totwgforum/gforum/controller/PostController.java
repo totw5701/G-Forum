@@ -6,6 +6,7 @@ import com.totwgforum.gforum.dto.comment.CommentDtoRes;
 import com.totwgforum.gforum.dto.post.PostDtoRes;
 import com.totwgforum.gforum.dto.post.PostSaveFormReq;
 import com.totwgforum.gforum.dto.post.PostUpdateFormReq;
+import com.totwgforum.gforum.dto.user.UserDtoSession;
 import com.totwgforum.gforum.service.CommentService;
 import com.totwgforum.gforum.service.PostService;
 import com.totwgforum.gforum.service.UserService;
@@ -29,7 +30,7 @@ public class PostController {
     private final CommentService commentService;
 
     @GetMapping("/posts/create")
-    public String createPostForm(Model model, @SessionAttribute(name = "loginUser", required = false) User loginUser){
+    public String createPostForm(Model model, @SessionAttribute(name = "loginUser", required = false) UserDtoSession loginUser){
         model.addAttribute("loginUser", loginUser);
         model.addAttribute("post", new PostSaveFormReq());
         return "post/create";
@@ -37,7 +38,7 @@ public class PostController {
 
     @PostMapping("/posts/create")
     public String createPostProcess(@Validated @ModelAttribute("post") PostSaveFormReq form, BindingResult bindingResult,
-                                    @SessionAttribute(name = "loginUser", required = false) User loginUser,
+                                    @SessionAttribute(name = "loginUser", required = false) UserDtoSession loginUser,
                                     Model model){
 
         model.addAttribute("loginUser", loginUser);
@@ -53,7 +54,8 @@ public class PostController {
     }
 
     @GetMapping("/posts/{postId}")
-    public String detailPost(@PathVariable Long postId, Model model, @SessionAttribute(name = "loginUser", required = false) User loginUser){
+    public String detailPost(@PathVariable Long postId, Model model,
+                             @SessionAttribute(name = "loginUser", required = false) UserDtoSession loginUser){
 
         model.addAttribute("loginUser", loginUser);
         model.addAttribute("comment", new Comment());
@@ -78,7 +80,8 @@ public class PostController {
     }
 
     @GetMapping("/posts/update/{postId}")
-    public String updatePostForm(@PathVariable Long postId, Model model, @SessionAttribute(name = "loginUser", required = false) User loginUser){
+    public String updatePostForm(@PathVariable Long postId, Model model,
+                                 @SessionAttribute(name = "loginUser", required = false) UserDtoSession loginUser){
 
         model.addAttribute("loginUser", loginUser);
 
@@ -97,7 +100,7 @@ public class PostController {
 
     @PostMapping("/posts/update")
     public String updatePostProcess(@Validated @ModelAttribute("post") PostUpdateFormReq form, BindingResult bindingResult,
-                                    @SessionAttribute(name = "loginUser", required = false) User loginUser){
+                                    @SessionAttribute(name = "loginUser", required = false) UserDtoSession loginUser){
 
         // author와 로그인 한 사용자가 일치하는지 확인
         if (!loginUser.getId().equals(form.getAuthor())) {
@@ -117,7 +120,7 @@ public class PostController {
     @PostMapping("/posts/delete")
     public String deletePost(@RequestParam("id") Long postId,
                              @RequestParam("author") Long author,
-                             @SessionAttribute(name = "loginUser", required = false) User loginUser){
+                             @SessionAttribute(name = "loginUser", required = false) UserDtoSession loginUser){
 
         // 로그인된 회원과 authorId 일치 확인.
         if (!loginUser.getId().equals(author)) {

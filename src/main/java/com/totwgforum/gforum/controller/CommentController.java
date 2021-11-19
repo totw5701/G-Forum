@@ -3,6 +3,7 @@ package com.totwgforum.gforum.controller;
 import com.totwgforum.gforum.domain.User;
 import com.totwgforum.gforum.dto.comment.CommentDtoRes;
 import com.totwgforum.gforum.dto.comment.CommentSaveFormReq;
+import com.totwgforum.gforum.dto.user.UserDtoSession;
 import com.totwgforum.gforum.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +22,7 @@ public class CommentController {
 
     @PostMapping("/comment/create")
     public String createCommentProcess(@Validated @ModelAttribute("comment") CommentSaveFormReq form, BindingResult bindingResult,
-                                       @SessionAttribute(name = "loginUser", required = false) User loginUser,
+                                       @SessionAttribute(name = "loginUser", required = false) UserDtoSession loginUser,
                                        Model model) {
 
         if (loginUser == null) {
@@ -42,7 +43,7 @@ public class CommentController {
     @PostMapping("/comment/delete")
     public String deleteComment(@RequestParam("id") Long commentId,
                                 @RequestParam("postId") Long postId,
-                                @SessionAttribute(name = "loginUser", required = false) User loginUser) {
+                                @SessionAttribute(name = "loginUser", required = false) UserDtoSession loginUser) {
 
         CommentDtoRes comment = commentService.findById(commentId);
 

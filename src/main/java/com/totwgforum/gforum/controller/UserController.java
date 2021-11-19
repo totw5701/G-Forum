@@ -1,6 +1,7 @@
 package com.totwgforum.gforum.controller;
 
-import com.totwgforum.gforum.domain.User;
+import com.totwgforum.gforum.dto.user.UserDtoRes;
+import com.totwgforum.gforum.dto.user.UserDtoSession;
 import com.totwgforum.gforum.dto.user.UserLoginFormReq;
 import com.totwgforum.gforum.dto.user.UserSaveFormReq;
 import com.totwgforum.gforum.service.UserService;
@@ -17,7 +18,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.time.LocalDateTime;
 
 @Slf4j
 @Controller
@@ -47,13 +47,12 @@ public class UserController {
             bindingResult.reject("passwordConfirm");
         }
 
-        User findUser = userService.findByEmail(form.getEmail());
-        System.out.println("findUser = " + findUser);
+        UserDtoRes findUser = userService.findByEmail(form.getEmail());
         if(findUser != null){
             bindingResult.reject("emailDuplicate");
         }
 
-        User findByNickName = userService.findByNickName(form.getNickName());
+        UserDtoRes findByNickName = userService.findByNickName(form.getNickName());
         if(findByNickName != null){
             bindingResult.reject("nickNameDuplicate");
         }
@@ -63,16 +62,7 @@ public class UserController {
             return "user/create";
         }
 
-
-        User user = new User();
-        user.setEmail(form.getEmail());
-        user.setNickName(form.getNickName());
-        user.setRegisterDate(LocalDateTime.now());
-
-        String secuPW = SHA256.convert(form.getPassword());
-        user.setPassword(secuPW);
-
-        userService.join(user);
+        userService.join(form);
         return "redirect:/";
     }
 
@@ -92,7 +82,7 @@ public class UserController {
             return "user/login";
         }
 
-        User findByEmailUser = userService.findByEmail(form.getEmail());
+        UserDtoRes findByEmailUser = userService.findByEmail(form.getEmail());
         if (findByEmailUser == null) {
             bindingResult.reject("nonUserEmail");
         } else if (!SHA256.convert(form.getPassword()).equals(findByEmailUser.getPassword())) {
@@ -105,7 +95,10 @@ public class UserController {
         }
 
         HttpSession session = request.getSession();
-        session.setAttribute("loginUser", findByEmailUser);
+        UserDtoSession userSession = new UserDtoSession();
+        userSession.setId(findByEmailUser.getId());
+        userSession.setNickName(findByEmailUser.getNickName());
+        session.setAttribute("loginUser", userSession);
         return "redirect:/";
     }
 
