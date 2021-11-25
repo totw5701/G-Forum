@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
@@ -42,5 +43,10 @@ public class UserRepository {
 
     public List<User> findAll(){
         return em.createQuery("select u from User u order by u.id desc", User.class).getResultList();
+    }
+
+    // 테스트용
+    public void deleteAll() {
+        em.createQuery("DELETE FROM User u").executeUpdate();
     }
 }

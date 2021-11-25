@@ -1,6 +1,8 @@
 package com.totwgforum.gforum.service;
 
 import com.totwgforum.gforum.domain.User;
+import com.totwgforum.gforum.dto.user.UserDtoRes;
+import com.totwgforum.gforum.dto.user.UserSaveFormReq;
 import org.apache.tomcat.jni.Local;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -15,26 +17,27 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
-@Rollback(false)
 class UserServiceTest {
 
     @Autowired private UserService userService;
 
-//    @Test
-//    public void 회원가입(){
-//        // given
-//        User user1 = new User();
-//        user1.setEmail("email@naver.com");
-//        user1.setNickName("pinkHero");
-//        user1.setRegisterDate(LocalDateTime.now());
-//
-//        // when
-//        Long joinedUserId = userService.join(user1);
-//
-//        // then
-//        User joinedUser = userService.findById(joinedUserId);
-//        Assertions.assertThat(joinedUser.getId()).isEqualTo(joinedUserId);
-//    }
+    @Test
+    public void 회원가입(){
+        // given
+
+        UserSaveFormReq dto = new UserSaveFormReq();
+        dto.setEmail("email@email.com");
+        dto.setPassword("1111");
+        dto.setPasswordConfirm("1111");
+        dto.setNickName("nickname");
+
+        // when
+        Long joinedUserId = userService.join(dto);
+
+        // then
+        UserDtoRes byId = userService.findById(joinedUserId);
+        Assertions.assertThat(dto.getEmail()).isEqualTo(byId.getEmail());
+    }
 
 //    @Test
 //    public void 회원조회(){

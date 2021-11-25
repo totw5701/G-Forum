@@ -56,4 +56,14 @@ public class PostRepository {
                 .setMaxResults(20)
                 .getResultList();
     }
+
+
+    // 개발용
+
+    public void clear(){
+        em.clear();
+    }
+    public void flush() {
+        em.flush();
+    }
 }

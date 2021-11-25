@@ -24,8 +24,4 @@ public class Post {
     @ManyToOne
     @JoinColumn(name = "USER_ID")
     private User user;
-
-    @OneToMany(mappedBy = "post")
-    private List<Comment> comments = new ArrayList<Comment>();
-
 }

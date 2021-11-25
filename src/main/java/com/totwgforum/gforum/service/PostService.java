@@ -36,8 +36,6 @@ public class PostService {
         User user = userRepository.findOne(form.getAuthor());
         post.setUser(user);
 
-        user.getPosts().add(post);
-
         postRepository.save(post);
         return post.getId();
     }
@@ -47,12 +45,6 @@ public class PostService {
 
         if (findOne == null) {
             return false;
-        }
-
-        // 댓글 삭제 먼저?
-        List<Comment> comments = findOne.getComments();
-        for (Comment comment : comments) {
-            commentRepository.remove(comment);
         }
 
         postRepository.remove(findOne);

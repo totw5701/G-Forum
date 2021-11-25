@@ -81,5 +81,8 @@ public class UserService {
         }
     }
 
-
+    // 테스트용
+    public void deleteAll() {
+        userRepository.deleteAll();
+    }
 }

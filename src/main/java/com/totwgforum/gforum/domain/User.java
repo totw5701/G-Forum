@@ -25,11 +25,4 @@ public class User {
     private String nickName;
     private String password;
     private LocalDateTime registerDate;
-
-    @OneToMany(mappedBy = "user")
-    List<Post> posts = new ArrayList<>();
-
-    @OneToMany(mappedBy = "author")
-    List<Comment> comments = new ArrayList<>();
-
 }
