@@ -1,11 +1,13 @@
 package com.totwgforum.gforum.service;
 
 import com.totwgforum.gforum.domain.User;
+import com.totwgforum.gforum.domain.UserRole;
 import com.totwgforum.gforum.dto.user.UserDtoRes;
 import com.totwgforum.gforum.dto.user.UserSaveFormReq;
 import com.totwgforum.gforum.repository.UserRepository;
 import com.totwgforum.gforum.util.SHA256;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +19,7 @@ import java.time.LocalDateTime;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public Long join(UserSaveFormReq form){
 
@@ -25,11 +28,12 @@ public class UserService {
         user.setNickName(form.getNickName());
         user.setRegisterDate(LocalDateTime.now());
 
-        String secuPW = SHA256.convert(form.getPassword());
-        user.setPassword(secuPW);
+        String secPwd = bCryptPasswordEncoder.encode(form.getPassword());
+        user.setPassword(secPwd);
+
+        user.setRole(UserRole.ROLE_USER);
 
         userRepository.save(user);
-
         return user.getId();
     }
 

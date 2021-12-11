@@ -1,4 +1,4 @@
-package com.totwgforum.gforum;
+package com.totwgforum.gforum.config;
 
 import com.totwgforum.gforum.filter.LoginCheckFilter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -7,10 +7,10 @@ import org.springframework.context.annotation.Configuration;
 
 import javax.servlet.Filter;
 
-@Configuration
+//@Configuration
 public class WebConfig {
 
-    @Bean
+    //@Bean
     public FilterRegistrationBean loginCheckFilter() {
         FilterRegistrationBean<Filter> filterRegistrationBean = new FilterRegistrationBean<>();
         filterRegistrationBean.setFilter(new LoginCheckFilter());

@@ -8,6 +8,7 @@ import com.totwgforum.gforum.service.UserService;
 import com.totwgforum.gforum.util.SHA256;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,6 +26,7 @@ import javax.servlet.http.HttpSession;
 public class UserController {
 
     private final UserService userService;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @GetMapping("/user/create")
     public String createUser(Model model){
@@ -68,11 +70,12 @@ public class UserController {
 
     @GetMapping("/user/login")
     public String login(Model model) {
+        System.out.println("UserController.login");
         model.addAttribute("user", new UserLoginFormReq());
         return "user/login";
     }
 
-    @PostMapping("/user/login")
+    // Spring Security로 변경 @PostMapping("/user/login")
     public String loginProcess(@Validated @ModelAttribute("user") UserLoginFormReq form,
                                BindingResult bindingResult,
                                HttpServletRequest request){
@@ -85,7 +88,7 @@ public class UserController {
         UserDtoRes findByEmailUser = userService.findByEmail(form.getEmail());
         if (findByEmailUser == null) {
             bindingResult.reject("nonUserEmail");
-        } else if (!SHA256.convert(form.getPassword()).equals(findByEmailUser.getPassword())) {
+        } else if (!bCryptPasswordEncoder.encode(form.getPassword()).equals(findByEmailUser.getPassword())) {
             bindingResult.reject("passwordNotMatch");
         }
 
