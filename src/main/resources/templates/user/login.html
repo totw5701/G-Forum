@@ -19,12 +19,13 @@
 
     <form action="/user/login" th:action th:object="${user}" method="post" class="post__create">
         <span class="author_register_header">로그인</span>
-        <div class="field-error__font" th:if="${#fields.hasGlobalErrors()}">
-            <span th:each="err: ${#fields.globalErrors()}" th:text="${err}">global error</span>
+
+        <div class="field-error__font" th:if="${error}">
+            <span th:text="${error}">global error</span>
         </div>
 
         <span class="author_register_form">Email</span>
-        <input class="author_register_text" type="text" name="email" th:field="*{email}">
+        <input class="author_register_text" type="text" name="email" th:value="${email}">
 
         <span class="author_register_form">Password</span>
         <input class="author_register_text" type="password" name="password">

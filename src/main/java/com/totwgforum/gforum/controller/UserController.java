@@ -8,17 +8,21 @@ import com.totwgforum.gforum.service.UserService;
 import com.totwgforum.gforum.util.SHA256;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.WebAttributes;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ResourceBundle;
 
 @Slf4j
 @Controller
@@ -70,8 +74,16 @@ public class UserController {
 
     @GetMapping("/user/login")
     public String login(Model model) {
-        System.out.println("UserController.login");
         model.addAttribute("user", new UserLoginFormReq());
+        return "user/login";
+    }
+
+    @PostMapping("/login-error")
+    public String loginError(HttpServletRequest request, Model model) {
+        System.out.println("UserController.loginError#######");
+
+        model.addAttribute("user", new UserLoginFormReq());
+
         return "user/login";
     }
 
@@ -104,6 +116,8 @@ public class UserController {
         session.setAttribute("loginUser", userSession);
         return "redirect:/";
     }
+
+
 
     @GetMapping("/user/logout")
     public String logout(HttpServletRequest req){

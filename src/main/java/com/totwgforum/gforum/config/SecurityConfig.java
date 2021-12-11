@@ -36,16 +36,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/", "/user/create", "/user/login", "/posts/**", "/css/**")
                     .permitAll()
                 // permitAll을 나중에 할 것. 순서 중요.
-                    .anyRequest().authenticated()
+                    .anyRequest().permitAll()
                 .and()
                     .logout().logoutSuccessUrl("/")
                 .and()
                     .formLogin()
                     .loginPage("/user/login")
-                    .loginProcessingUrl("/user/login")
-                    .defaultSuccessUrl("/")
                     .successHandler(loginSuccessHandler)
                     .failureHandler(loginFailureHandler)
+                    //.failureUrl("/login-error") // 이건 리다이렉션
                     .usernameParameter("email");
 
     }
