@@ -44,7 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .loginPage("/user/login")
                     .successHandler(loginSuccessHandler)
                     .failureHandler(loginFailureHandler)
-                    //.failureUrl("/login-error") // 이건 리다이렉션
+                    //.failureUrl("/login-error") // 이건 리다이렉션???
                     .usernameParameter("email");
 
     }

@@ -1,7 +1,9 @@
 package com.totwgforum.gforum.service;
 
 import com.totwgforum.gforum.domain.Post;
+import com.totwgforum.gforum.domain.User;
 import com.totwgforum.gforum.repository.PostRepository;
+import com.totwgforum.gforum.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,6 +19,7 @@ import static org.assertj.core.api.Assertions.*;
 class PostServiceTest {
 
     @Autowired PostService postService;
+
 
 //    @Test
 //    public void 글등록(){
