@@ -12,6 +12,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -24,34 +25,21 @@ class UserServiceTest {
     @Test
     public void 회원가입(){
         // given
+        String email = UUID.randomUUID().toString();
+        String nick = UUID.randomUUID().toString();
 
         UserSaveFormReq dto = new UserSaveFormReq();
-        dto.setEmail("email@email.com");
+        dto.setEmail(email);
         dto.setPassword("1111");
         dto.setPasswordConfirm("1111");
-        dto.setNickName("nickname");
+        dto.setNickName(nick);
 
         // when
         Long joinedUserId = userService.join(dto);
 
         // then
         UserDtoRes byId = userService.findById(joinedUserId);
-        Assertions.assertThat(dto.getEmail()).isEqualTo(byId.getEmail());
+        Assertions.assertThat(email).isEqualTo(byId.getEmail());
     }
 
-//    @Test
-//    public void 회원조회(){
-//        // given
-//        User user1 = new User();
-//        user1.setEmail("email@naver.com");
-//        user1.setNickName("pinkHero");
-//        user1.setRegisterDate(LocalDateTime.now());
-//        Long joinedUserId = userService.join(user1);
-//
-//        // when
-//        User findedUser = userService.findById(joinedUserId);
-//
-//        // then
-//        Assertions.assertThat(findedUser.getId()).isEqualTo(joinedUserId);
-//    }
 }

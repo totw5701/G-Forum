@@ -20,27 +20,20 @@ class UserRepositoryTest {
     UserRepository userRepository;
     
     @Test
-    void 이메일로_찾기() {
+    void 저장_및_이메일로_찾기() {
         // Given
         User entity = new User();
-        entity.setEmail("test1234@test.com");
+        entity.setEmail("dhfgiy3uf3!@#@test.com");
         entity.setPassword("1111");
         entity.setNickName("testNick");
         entity.setRegisterDate(LocalDateTime.now());
         entity.setRole(UserRole.ROLE_USER);
         
-        userRepository.save(entity);
-        
         // When
-        User user = userRepository.findByEmail("test1234@test.com");
+        userRepository.save(entity);
+        User user = userRepository.findByEmail("dhfgiy3uf3!@#@test.com");
 
         // Then
-        System.out.println("user.getEmail() = " + user.getEmail());
-        System.out.println("user.getRole() = " + user.getRole());
-        System.out.println("user.getNickName() = " + user.getNickName());
-        Assertions.assertThat(user.getEmail()).isEqualTo("test1234@test.com");
+        Assertions.assertThat(user.getEmail()).isEqualTo("dhfgiy3uf3!@#@test.com");
     }
-    
-    
-
 }

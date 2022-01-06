@@ -37,10 +37,6 @@ class UserControllerTest {
     @Autowired
     UserService userService;
 
-    @AfterEach
-    void tearDown() {
-        userService.deleteAll();
-    }
 
     @Test
     void 회원가입() {

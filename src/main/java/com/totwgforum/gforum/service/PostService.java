@@ -51,9 +51,9 @@ public class PostService {
         return true;
     }
 
-    public Long update(Long postId, PostUpdateFormReq form){
+    public Long update(PostUpdateFormReq form){
         // dirty checking
-        Post entity = postRepository.findOne(postId);
+        Post entity = postRepository.findOne(form.getId());
         entity.setTitle(form.getTitle());
         entity.setDescription(form.getDescription());
         return entity.getId();

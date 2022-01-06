@@ -3,6 +3,7 @@ package com.totwgforum.gforum.repository;
 import com.totwgforum.gforum.domain.Comment;
 import com.totwgforum.gforum.domain.Post;
 import com.totwgforum.gforum.domain.User;
+import com.totwgforum.gforum.domain.UserRole;
 import org.aspectj.lang.annotation.Before;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
@@ -28,9 +29,18 @@ class PostRepositoryTest {
 
     @Autowired PostRepository postRepository;
 
+    @Autowired UserRepository userRepository;
+
     @BeforeEach
     void before() {
         postRepository.clear();
+
+        User user = new User();
+        user.setEmail("email11test!@#@");
+        user.setNickName("nick23@#testNick");
+        user.setRegisterDate(LocalDateTime.now());
+        user.setRole(UserRole.ROLE_USER);
+        userRepository.save(user);
     }
 
     @Test
@@ -55,12 +65,7 @@ class PostRepositoryTest {
     @Test
     void 모든_글_받기(){
         // Given
-        User user = new User();
-        user.setRegisterDate(LocalDateTime.now());
-        user.setEmail("sdfasdfasdf@asdf.com");
-        user.setPassword("1");
-        user.setNickName("asdasd");
-        user.setId(325L);
+        User user = userRepository.findByEmail("email11test!@#@");
 
 
         Post post = new Post();
@@ -75,58 +80,36 @@ class PostRepositoryTest {
         post2.setDescription("description");
         post2.setTitle("title");
 
-
-        System.out.println("save");
         postRepository.save(post);
         postRepository.save(post2);
 
         // When
-        System.out.println("findAll");
         List<Post> list = postRepository.findAll();
 
         // Then
-        assertThat(list.size()).isEqualTo(2);
+        assertThat(list.size()).isGreaterThan(2);
     }
 
     @Test
     void 글_삭제(){
         // Given
+        Post post = new Post();
+        post.setUser(new User());
+        post.setCreated(LocalDateTime.now());
+        post.setDescription("description");
+        post.setTitle("title");
+
+        postRepository.save(post);
 
         // When
+        Post before = postRepository.findOne(post.getId());
+        assertThat(before.getTitle()).isEqualTo("title");
+
+        postRepository.remove(post);
 
         // Then
+        Post after = postRepository.findOne(post.getId());
+        assertThat(after).isNull();
 
     }
-
-    @Test
-    void 모든_글_갯수(){
-        // Given
-
-        // When
-
-        // Then
-
-    }
-
-    @Test
-    void 특정_페이지_글_리스트_받기(){
-        // Given
-
-        // When
-
-        // Then
-
-    }
-
-    @Test
-    void 글_검색_받기(){
-        // Given
-
-        // When
-
-        // Then
-
-    }
-
-
 }
