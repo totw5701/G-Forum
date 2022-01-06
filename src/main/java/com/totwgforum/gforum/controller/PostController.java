@@ -50,7 +50,7 @@ public class PostController {
             return "post/create";
         }
 
-        if(form.getAuthor() != loginUser.getId()) {
+        if(!form.getAuthor().equals(loginUser.getId())) {
             throw new CAuthorNotMatchedException();
         }
 
@@ -99,7 +99,7 @@ public class PostController {
         if (!loginUser.getId().equals(post.getAuthor())) {
             throw new CAuthorNotMatchedException();
         }
-        
+
         model.addAttribute("post", post);
         return "post/update";
     }

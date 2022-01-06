@@ -20,12 +20,10 @@ public class Comment {
     private LocalDateTime created;
 
     @ManyToOne
-    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "USER_ID")
     private User author;
 
     @ManyToOne
-    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "POST_ID")
     private Post post;
 

@@ -27,7 +27,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
+        http.csrf().disable()
             .headers().frameOptions().disable()
             .and()
                 .authorizeRequests()
@@ -38,7 +38,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             // permitAll을 나중에 할 것. 순서 중요.
                 .anyRequest().permitAll()
             .and()
-                .logout().logoutSuccessUrl("/")
+                .logout()
+                    .logoutSuccessUrl("/")
             .and()
                 .formLogin()
                 .loginPage("/user/login")

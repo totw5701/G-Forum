@@ -36,7 +36,10 @@ public class CommentController {
             return "redirect:/posts/" + form.getPostId();
         }
 
-        if(form.getAuthor() != loginUser.getId()){
+        System.out.println("form.getAuthor() = " + form.getAuthor());
+        System.out.println("loginUser = " + loginUser.getId());
+
+        if(!form.getAuthor().equals(loginUser.getId())){
             throw new CAuthorNotMatchedException();
         }
 
