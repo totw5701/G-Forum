@@ -49,6 +49,10 @@ public class PostController {
             return "post/create";
         }
 
+        if(form.getAuthor() != loginUser.getId()) {
+            return "redirect:/";
+        }
+
         Long postId = postService.create(form);
 
         return "redirect:/posts/"+postId;

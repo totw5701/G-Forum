@@ -35,6 +35,10 @@ public class CommentController {
             return "redirect:/posts/" + form.getPostId();
         }
 
+        if(form.getAuthor() != loginUser.getId()){
+            return "redirect:/posts/" + form.getPostId();
+        }
+
         commentService.create(form);
 
         return "redirect:/posts/" + form.getPostId();

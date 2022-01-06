@@ -47,14 +47,7 @@ public class PostService {
             return false;
         }
 
-        List<Comment> allInPost = commentRepository.findAllInPost(findOne.getId());
-
-        for (Comment comment : allInPost) {
-            commentRepository.remove(comment);
-        }
-
         postRepository.remove(findOne);
-
         return true;
     }
 

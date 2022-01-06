@@ -27,25 +27,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
-                .headers().frameOptions().disable()
-                .and()
-                    .authorizeRequests()
-                    .antMatchers("/posts/update/**", "/posts/delete", "/posts/create")
-                    .authenticated()
-                    .antMatchers("/", "/user/create", "/user/login", "/posts/**", "/css/**")
-                    .permitAll()
-                // permitAll을 나중에 할 것. 순서 중요.
-                    .anyRequest().permitAll()
-                .and()
-                    .logout().logoutSuccessUrl("/")
-                .and()
-                    .formLogin()
-                    .loginPage("/user/login")
-                    .successHandler(loginSuccessHandler)
-                    .failureHandler(loginFailureHandler)
-                    //.failureUrl("/login-error") // 이건 리다이렉션
-                    .usernameParameter("email");
+        http
+            .headers().frameOptions().disable()
+            .and()
+                .authorizeRequests()
+                .antMatchers("/posts/update/**", "/posts/delete", "/posts/create")
+                .authenticated()
+                .antMatchers("/", "/user/create", "/user/login", "/posts/**", "/css/**")
+                .permitAll()
+            // permitAll을 나중에 할 것. 순서 중요.
+                .anyRequest().permitAll()
+            .and()
+                .logout().logoutSuccessUrl("/")
+            .and()
+                .formLogin()
+                .loginPage("/user/login")
+                .successHandler(loginSuccessHandler)
+                .failureHandler(loginFailureHandler)
+                //.failureUrl("/login-error") // 이건 리다이렉션
+                .usernameParameter("email");
 
     }
 }

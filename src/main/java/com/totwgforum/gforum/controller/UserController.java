@@ -80,7 +80,6 @@ public class UserController {
 
     @PostMapping("/login-error")
     public String loginError(HttpServletRequest request, Model model) {
-        System.out.println("UserController.loginError#######");
 
         model.addAttribute("user", new UserLoginFormReq());
 
@@ -117,9 +116,7 @@ public class UserController {
         return "redirect:/";
     }
 
-
-
-    @GetMapping("/user/logout")
+    // spring security @GetMapping("/user/logout")
     public String logout(HttpServletRequest req){
 
         log.info("logout!");

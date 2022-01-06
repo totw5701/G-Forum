@@ -11,6 +11,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+
+/**
+ * Spring security로 대체되었습니다.
+ */
+
 @Slf4j
 public class LoginCheckFilter implements Filter {
 
