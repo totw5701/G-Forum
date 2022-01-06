@@ -1,5 +1,6 @@
 package com.totwgforum.gforum.controller;
 
+import com.totwgforum.gforum.advice.exception.CAuthorNotMatchedException;
 import com.totwgforum.gforum.domain.User;
 import com.totwgforum.gforum.dto.comment.CommentDtoRes;
 import com.totwgforum.gforum.dto.comment.CommentSaveFormReq;
@@ -36,7 +37,7 @@ public class CommentController {
         }
 
         if(form.getAuthor() != loginUser.getId()){
-            return "redirect:/posts/" + form.getPostId();
+            throw new CAuthorNotMatchedException();
         }
 
         commentService.create(form);
@@ -56,7 +57,7 @@ public class CommentController {
         }
 
         if (!loginUser.getId().equals(comment.getAuthorId())) {
-            return "redirect:/posts/" + postId;
+            throw new CAuthorNotMatchedException();
         }
 
         commentService.delete(commentId);

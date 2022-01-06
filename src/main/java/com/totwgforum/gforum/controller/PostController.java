@@ -1,5 +1,6 @@
 package com.totwgforum.gforum.controller;
 
+import com.totwgforum.gforum.advice.exception.CAuthorNotMatchedException;
 import com.totwgforum.gforum.domain.Comment;
 import com.totwgforum.gforum.domain.User;
 import com.totwgforum.gforum.dto.comment.CommentDtoRes;
@@ -50,10 +51,12 @@ public class PostController {
         }
 
         if(form.getAuthor() != loginUser.getId()) {
-            return "redirect:/";
+            throw new CAuthorNotMatchedException();
         }
 
         Long postId = postService.create(form);
+
+
 
         return "redirect:/posts/"+postId;
     }
@@ -94,11 +97,9 @@ public class PostController {
 
         // author와 로그인 한 사용자가 일치하는지 확인
         if (!loginUser.getId().equals(post.getAuthor())) {
-            log.info("post/update, 세션과 author가 다름");
-            return "redirect:/";
+            throw new CAuthorNotMatchedException();
         }
-
-
+        
         model.addAttribute("post", post);
         return "post/update";
     }
@@ -109,8 +110,7 @@ public class PostController {
 
         // author와 로그인 한 사용자가 일치하는지 확인
         if (!loginUser.getId().equals(form.getAuthor())) {
-            log.info("post/update, 세션과 author가 다름");
-            return "redirect:/";
+            throw new CAuthorNotMatchedException();
         }
 
         if(bindingResult.hasErrors()){
@@ -129,7 +129,7 @@ public class PostController {
 
         // 로그인된 회원과 authorId 일치 확인.
         if (!loginUser.getId().equals(author)) {
-            return "redirect:/";
+            throw new CAuthorNotMatchedException();
         }
 
         postService.delete(postId);
