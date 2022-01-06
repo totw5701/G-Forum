@@ -28,24 +28,9 @@ class PostRepositoryTest {
 
     @Autowired PostRepository postRepository;
 
-
-    @Autowired
-    UserRepository userRepository;
-
-    @Test
-    @Rollback(false)
-    public void 더미데이터넣기(){
-
-        User user = userRepository.findAll().get(0);
-
-        for(int i = 0; i < 300; i++) {
-            Post post = new Post();
-            post.setTitle("asdasd");
-            post.setDescription("테스트용 더미 내용.");
-            post.setUser(user);
-            post.setCreated(LocalDateTime.now());
-            postRepository.save(post);
-        }
+    @BeforeEach
+    void before() {
+        postRepository.clear();
     }
 
     @Test

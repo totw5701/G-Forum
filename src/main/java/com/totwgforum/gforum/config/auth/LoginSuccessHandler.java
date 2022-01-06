@@ -26,6 +26,8 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
 
         User user = principal.getUser();
+        System.out.println("user.getEmail() = " + user.getEmail());
+
 
         HttpSession session = request.getSession();
         UserDtoSession userSession = new UserDtoSession();
