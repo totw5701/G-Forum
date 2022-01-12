@@ -70,6 +70,7 @@ public class CommentService {
         comment.setId(entity.getId());
         comment.setAuthor(entity.getAuthor().getNickName());
         comment.setAuthorId(entity.getAuthor().getId());
+        comment.setDescription(entity.getDescription());
         comment.setCreated(entity.getCreated().format(DateTimeFormatter.ofPattern("MM-dd")));
 
         return comment;

@@ -5,6 +5,7 @@ import com.totwgforum.gforum.dto.user.UserSaveFormReq;
 import com.totwgforum.gforum.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
@@ -19,6 +20,7 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
+@WebMvcTest(controllers = UserController.class)
 @SpringBootTest
 @Transactional
 class UserControllerTest {
@@ -31,7 +33,9 @@ class UserControllerTest {
 
 
     @Test
-    void 회원가입() {
+    void 회원가입_페이지() {
+
+
 
 
         // Given
