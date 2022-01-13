@@ -87,7 +87,7 @@ class PostRepositoryTest {
         List<Post> list = postRepository.findAll();
 
         // Then
-        assertThat(list.size()).isGreaterThan(2);
+        assertThat(list.size()).isGreaterThan(1);
     }
 
     @Test
