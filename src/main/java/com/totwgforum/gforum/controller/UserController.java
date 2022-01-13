@@ -35,7 +35,9 @@ public class UserController {
     @GetMapping("/user/create")
     public String createUser(Model model){
         model.addAttribute("user" ,new UserSaveFormReq());
-        return "/user/create";
+
+        System.out.println("UserController.createUser");
+        return "user/create";
     }
 
     @PostMapping("/user/create")
