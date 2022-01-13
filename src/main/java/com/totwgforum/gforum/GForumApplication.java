@@ -9,5 +9,5 @@ public class GForumApplication {
     public static void main(String[] args) {
         SpringApplication.run(GForumApplication.class, args);
     }
-    
+
 }
