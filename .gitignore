@@ -92,3 +92,5 @@ out/
 !**/src/test/**/out/
 
 application-DBinfo.properties
+
+*.lock
