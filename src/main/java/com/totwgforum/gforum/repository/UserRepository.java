@@ -45,6 +45,10 @@ public class UserRepository {
         return em.createQuery("select u from User u order by u.id desc", User.class).getResultList();
     }
 
+    public void delete(Long id){
+        em.remove(id);
+    }
+
     // 테스트용
     public void deleteAll() {
         em.createQuery("DELETE FROM User u").executeUpdate();

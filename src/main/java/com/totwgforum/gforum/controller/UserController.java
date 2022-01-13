@@ -42,8 +42,6 @@ public class UserController {
     public String createUserProcess(@Validated @ModelAttribute("user")UserSaveFormReq form,
                                     BindingResult bindingResult){
 
-        // 비밀번호 보안 어떻게 해야하는지 찾아볼 것.
-
         if(bindingResult.hasErrors()){
             log.info("error={}", bindingResult);
             return "user/create";
