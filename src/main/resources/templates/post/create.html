@@ -15,7 +15,7 @@
 </article>
 
 <section class="body_frame">
-    <form action="/posts/create" th:action th:object="${post}" method="post" class="post__create">
+    <form action="/posts/create" th:object="${post}" method="post" class="post__create">
         <input type="hidden" value="1" th:value="${loginUser.getId()}" name="author">
         <input class="post_title" type="text" th:field="*{title}" placeholder="Title" th:errorclass="field-error">
         <div class="field-error__font" th:errors="*{title}">에러 메세지</div>
