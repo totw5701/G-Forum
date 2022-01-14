@@ -58,7 +58,7 @@ public class PostController {
 
 
 
-        return "redirect:/posts/"+postId;
+        return "redirect:posts/"+postId;
     }
 
     @GetMapping("/posts/{postId}")
